@@ -435,7 +435,7 @@ $("lang").onchange=e=>{L=e.target.value;try{localStorage.setItem("lang",L)}catch
 /* ===== Google-Tabelle (Preise & Verfügbarkeit live) =====
    Link der veröffentlichten Tabelle (Datei > Teilen > Im Web veröffentlichen > CSV) hier einfügen.
    Leer lassen = App nutzt nur die Werte oben im SHOP-Block. */
-const SHEET_URL="";
+const SHEET_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSjTvu4VSVkeem6pOCwYw_jfDFBoHuM_VTHmEZeHUspcMCtn9n11GKxoi5uU_f7o9M5R92u9eVtn_Nx/pub?gid=1653382801&single=true&output=csv";
 function parseCSV(t){const r=[];let row=[],f="",q=false;t=String(t).replace(/^\uFEFF/,"");
  for(let i=0;i<t.length;i++){const c=t[i];
   if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
