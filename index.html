@@ -491,6 +491,26 @@ footer{border-top:1px solid rgba(255,255,255,.09)}
 #featured-showcase .showcase-track .p { cursor: pointer; }
 
 </style>
+<style>
+
+/* Quiet optional coastal ambience control */
+#coastal-sound-toggle{
+  position:fixed;left:16px;bottom:22px;z-index:99999;
+  display:flex;align-items:center;gap:7px;
+  border:1px solid rgba(255,255,255,.75);border-radius:999px;
+  padding:9px 12px;background:rgba(20,48,76,.88);color:#fff;
+  box-shadow:0 3px 14px rgba(0,0,0,.16);
+  font:600 13px/1.2 inherit;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+#coastal-sound-toggle .coastal-sound-icon{font-size:17px;line-height:1}
+#coastal-sound-toggle[aria-pressed="true"]{background:rgba(194,126,48,.94)}
+#coastal-sound-toggle:focus-visible{outline:3px solid #e7b15f;outline-offset:3px}
+@media(max-width:600px){
+  #coastal-sound-toggle{left:10px;bottom:14px;padding:8px 10px;font-size:12px}
+}
+
+</style>
 </head>
 <body>
 <nav><div class="w">
@@ -1112,5 +1132,142 @@ window.addEventListener("resize",run);if(document.fonts&&document.fonts.ready)do
 })();
 </script>
 
+
+<script>
+(() => {
+  const installCoastalSound = () => {
+    if (document.getElementById('coastal-sound-toggle')) return;
+
+    const button = document.createElement('button');
+    button.id = 'coastal-sound-toggle';
+    button.type = 'button';
+    button.title = 'تسجيل النورس: Alexander – Orange Free Sounds (CC BY 4.0)';
+    button.setAttribute('aria-pressed', 'false');
+    button.setAttribute('aria-label', 'تشغيل أصوات البحر الهادئة');
+    button.innerHTML = '<span class="coastal-sound-icon" aria-hidden="true">🌊</span><span>صوت البحر</span>';
+    document.body.appendChild(button);
+
+    let ctx = null;
+    let master = null;
+    let birdTimer = null;
+    let modulation = null;
+    let active = false;
+
+    function makeWaves() {
+      const length = 3 * ctx.sampleRate;
+      const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < length; i++) data[i] = (Math.random() * 2 - 1) * 0.7;
+
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      noise.loop = true;
+
+      const low = ctx.createBiquadFilter();
+      low.type = 'lowpass';
+      low.frequency.value = 520;
+      low.Q.value = 0.35;
+
+      const high = ctx.createBiquadFilter();
+      high.type = 'highpass';
+      high.frequency.value = 75;
+
+      const swell = ctx.createGain();
+      swell.gain.value = 0.20;
+
+      modulation = ctx.createOscillator();
+      const depth = ctx.createGain();
+      modulation.type = 'sine';
+      modulation.frequency.value = 0.075;
+      depth.gain.value = 0.10;
+      modulation.connect(depth);
+      depth.connect(swell.gain);
+      modulation.start();
+
+      noise.connect(low);
+      low.connect(high);
+      high.connect(swell);
+      swell.connect(master);
+      noise.start();
+    }
+
+    const gullAudio = new Audio('https://www.orangefreesounds.com/wp-content/uploads/2015/01/Seagulls-sound.mp3');
+    gullAudio.preload = 'none';
+    gullAudio.loop = false;
+    gullAudio.volume = 0.14;
+
+    function seabird() {
+      if (!ctx || !active || ctx.state !== 'running') return;
+      // Use an actual recorded seagull call rather than a synthetic tone.
+      try {
+        gullAudio.pause();
+        gullAudio.currentTime = 0;
+        gullAudio.volume = 0.14;
+        const playPromise = gullAudio.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(() => {});
+        }
+      } catch (_) {}
+    }
+
+    async function startSound() {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) {
+        button.querySelector('span:last-child').textContent = 'الصوت غير مدعوم';
+        return;
+      }
+      ctx = new AudioContextClass();
+      await ctx.resume();
+      master = ctx.createGain();
+      master.gain.value = 0.12; // Overall quiet level.
+      master.connect(ctx.destination);
+      makeWaves();
+      active = true;
+      birdTimer = window.setTimeout(function scheduleBird() {
+        seabird();
+        if (active) birdTimer = window.setTimeout(scheduleBird, 26000 + Math.random() * 22000);
+      }, 12000 + Math.random() * 9000);
+      button.setAttribute('aria-pressed', 'true');
+      button.setAttribute('aria-label', 'إيقاف أصوات البحر');
+      button.innerHTML = '<span class="coastal-sound-icon" aria-hidden="true">🔊</span><span>إيقاف الصوت</span>';
+    }
+
+    async function stopSound() {
+      active = false;
+      if (birdTimer) window.clearTimeout(birdTimer);
+      birdTimer = null;
+      try { gullAudio.pause(); gullAudio.currentTime = 0; } catch (_) {}
+      if (ctx) {
+        const old = ctx;
+        ctx = null;
+        try { await old.close(); } catch (_) {}
+      }
+      master = null;
+      modulation = null;
+      button.setAttribute('aria-pressed', 'false');
+      button.setAttribute('aria-label', 'تشغيل أصوات البحر الهادئة');
+      button.innerHTML = '<span class="coastal-sound-icon" aria-hidden="true">🌊</span><span>صوت البحر</span>';
+    }
+
+    button.addEventListener('click', async () => {
+      if (active) await stopSound();
+      else {
+        button.disabled = true;
+        try { await startSound(); }
+        catch (_) { await stopSound(); }
+        finally { button.disabled = false; }
+      }
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', installCoastalSound, { once: true });
+  } else {
+    installCoastalSound();
+  }
+})();
+</script>
+
+<!-- Seagull audio: "Seagulls sound" by Alexander, Orange Free Sounds, CC BY 4.0. Source: https://orangefreesounds.com/seagulls-sound/ -->
 </body>
 </html>
