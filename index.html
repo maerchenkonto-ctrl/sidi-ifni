@@ -1299,5 +1299,14 @@ window.addEventListener("resize",run);if(document.fonts&&document.fonts.ready)do
 </script>
 
 <!-- Seagull audio: "Seagulls sound" by Alexander, Orange Free Sounds, CC BY 4.0. Source: https://orangefreesounds.com/seagulls-sound/ -->
+<style id="fix-card-img">
+/* Fix: die Klasse .ct (Kontakt-Bereich) kollidiert mit <img class="ct"> in den Produktkarten
+   (Rand, Schatten, Rundung, max-width). Hier fuer ALLE Produktbilder vereinheitlicht. */
+.p{overflow:hidden!important}
+.p .pi{background:#fff!important;border-radius:0!important;width:100%!important;margin:0!important;padding:0!important;overflow:hidden!important}
+.p .pi img,.p .pi img.ct{position:absolute!important;inset:0!important;margin:0!important;max-width:none!important;width:100%!important;height:100%!important;padding:10px!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fff!important;object-fit:contain!important;color:inherit!important;display:block!important}
+.p .pi img.ct::before,.p .pi img.ct::after{display:none!important}
+.p:after{display:none!important}
+</style>
 </body>
 </html>
