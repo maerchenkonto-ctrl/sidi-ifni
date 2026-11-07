@@ -362,6 +362,8 @@ footer{background:#051d3a;color:#9fb3cf;padding:34px 0 0;text-align:start;font-s
 
 .p.hl{animation:hlP 2.2s ease-out 1}
 @keyframes hlP{0%{box-shadow:0 0 0 0 rgba(247,148,29,.85)}30%{box-shadow:0 0 0 6px rgba(247,148,29,.55)}100%{box-shadow:0 0 0 14px rgba(247,148,29,0)}}
+
+#featured-showcase .showcase-track .dt{display:none!important}
 </style>
 
 <style id="premium-finish">
@@ -801,7 +803,7 @@ try{cart=JSON.parse(localStorage.getItem("cart")||"{}")}catch(e){}
 let W={};try{W=JSON.parse(localStorage.getItem("wish")||"{}")}catch(e){}
 const $=i=>document.getElementById(i);
 /* NEW-Badge: Datum (JJJJ-MM-TT) wann der Artikel online kam – 30 Tage lang sichtbar / تاريخ إضافة المنتج، تظهر NEW لمدة 30 يوماً */
-const ADDED={18:"2026-11-07"};
+const ADDED={17:"2026-11-07",18:"2026-11-07"};
 const isNew=p=>{const d=ADDED[p[0]];if(!d)return false;const a=(Date.now()-new Date(d+"T00:00:00").getTime())/864e5;return a>=0&&a<30};
 const nm=p=>p[4].split("|")[LI[L]];
 const sp=p=>p[6]?p[6].split("|")[LI[L]]:"";
