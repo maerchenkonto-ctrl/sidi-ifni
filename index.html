@@ -596,6 +596,14 @@ html[dir="rtl"] .nbar-track{animation-name:nbarR}
 .hero-pic .hp-wa{left:10.7%;width:37.1%;top:90.6%;height:6.6%;background:rgba(6,26,54,.86);color:#fff;border:2px solid rgba(255,255,255,.9);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .hero-pic .hp-a:active{transform:scale(.97)}
 </style>
+<style id="kc-n-center">
+/* Category count badge: valid font shorthand + flex centering so the number sits exactly in the middle of the dark disc */
+.ch.cats .kc .kc-n{display:flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:20px;height:20px;padding:0 5px;font-family:inherit;font-weight:800;font-size:11px;line-height:1;font-variant-numeric:lining-nums tabular-nums;text-align:center}
+</style>
+<style id="showcase-smooth">
+#featured-showcase .showcase-track .p{animation:glowSpin 5s linear infinite!important;will-change:transform,opacity;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+#featured-showcase .showcase-track{backface-visibility:hidden}
+</style>
 </head>
 <body>
 <nav><div class="w">
@@ -1222,6 +1230,7 @@ window.addEventListener("resize",run);if(document.fonts&&document.fonts.ready)do
   if(source.children.length)refresh();
 
   function getAnimation(){
+    if(window.__scAnim)return window.__scAnim;
     if(!animation||animation.playState==='idle'){
       animation=track.getAnimations().find(a=>a.effect)||null;
     }
@@ -1456,46 +1465,63 @@ window.addEventListener("resize",run);if(document.fonts&&document.fonts.ready)do
 </style>
 <script id="showcase-3d-js">
 (()=>{
+  /* One clock drives BOTH the track scroll and the per-card 3D transforms in the same frame
+     (before: the track moved on the compositor while cards were computed from a stale layout read => jitter) */
   const track=document.getElementById('showcaseTrack');
   if(!track||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
   const win=track.parentElement;
-  let running=false,raf=0,lastN=-1,lastW=-1,w=0,gap=0,tw=0;
+  let running=false,raf=0,lastN=-1,lastW=-1,w=0,gap=0,tw=0,half=0,base=0;
+  let t=0,last=0,paused=false,hover=false;
   const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+  const dur=()=>innerWidth<=650?38000:48000;
+  track.style.animation='none';
+  /* tiny animation-like interface used by the drag/pause code above */
+  window.__scAnim={playState:'running',effect:{getTiming:()=>({duration:dur()})},
+    get currentTime(){return t},set currentTime(v){t=v},pause(){paused=true},play(){paused=false}};
+  win.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')hover=true});
+  win.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hover=false});
   function measure(cards){
     const cs=getComputedStyle(track);
     gap=parseFloat(cs.columnGap||cs.gap)||0;
-    w=cards[0].offsetWidth;
-    tw=track.offsetWidth;
+    w=parseFloat(getComputedStyle(cards[0]).width)||cards[0].offsetWidth;
+    const n=cards.length;
+    tw=n*w+(n-1)*gap;
+    half=(n/2)*(w+gap);          /* exact loop length => seamless wrap */
+    base=track.offsetLeft;
   }
-  function frame(){
+  function frame(now){
     raf=0;
     const cards=track.children,n=cards.length;
     if(n){
       const vw=win.clientWidth;
-      if(n!==lastN||vw!==lastW){measure(cards);lastN=n;lastW=vw;}
-      const wr=win.getBoundingClientRect(),tr=track.getBoundingClientRect();
-      const trackLeft=tr.left-wr.left,mid=vw/2;
+      if(n!==lastN||vw!==lastW){track.style.transform='none';measure(cards);lastN=n;lastW=vw;}
+      const dt=last?Math.min(50,now-last):0;last=now;
+      if(!paused&&!hover)t+=dt;
+      const D=dur();t=((t%D)+D)%D;
+      const pos=t/D*half;
+      track.style.transform='translate3d('+(-pos).toFixed(2)+'px,0,0)';
+      const trackLeft=base-pos,mid=vw/2;
       const R=clamp(vw*0.45,250,540);
       for(let i=0;i<n;i++){
         const left=tw-(i+1)*w-i*gap;
-        const d=trackLeft+left+w/2-mid;            // Abstand der Kartenmitte zur Bildmitte
+        const d=trackLeft+left+w/2-mid;
         const el=cards[i].style;
-        if(Math.abs(d)>vw*0.75+w){el.visibility='hidden';continue;}
-        el.visibility='';
-        const th=clamp(d/R,-1.42,1.42);            // Winkel auf dem Zylinder
+        if(Math.abs(d)>vw*0.75+w){if(el.visibility!=='hidden')el.visibility='hidden';continue;}
+        if(el.visibility)el.visibility='';
+        const th=clamp(d/R,-1.42,1.42);
         const z=-R*(1-Math.cos(th))+46*Math.cos(th);
         const a=Math.abs(th);
         el.opacity=a<1.05?1:Math.max(0,1-(a-1.05)/.45);
         const X=R*Math.sin(th);
-        el.transformOrigin=(w/2-d).toFixed(1)+'px 50%';   // Fluchtpunkt = Bildmitte
-        el.transform='perspective(810px) translate3d('+X.toFixed(1)+'px,0,'+z.toFixed(1)+'px) rotateY('+th.toFixed(3)+'rad) translateX('+(-d).toFixed(1)+'px)';
+        el.transformOrigin=(w/2-d).toFixed(1)+'px 50%';
+        el.transform='perspective(810px) translate3d('+X.toFixed(2)+'px,0,'+z.toFixed(2)+'px) rotateY('+th.toFixed(4)+'rad) translateX('+(-d).toFixed(2)+'px)';
         el.zIndex=String(Math.round(100-a*60));
       }
     }
     if(running)raf=requestAnimationFrame(frame);
   }
-  const start=()=>{if(!running){running=true;raf=requestAnimationFrame(frame);}};
-  const stop=()=>{running=false;if(raf)cancelAnimationFrame(raf);raf=0;};
+  const start=()=>{if(!running){running=true;last=0;raf=requestAnimationFrame(frame);}};
+  const stop=()=>{running=false;if(raf)cancelAnimationFrame(raf);raf=0;last=0;};
   new IntersectionObserver(es=>es[0].isIntersecting?start():stop(),{rootMargin:'120px'}).observe(win);
   addEventListener('resize',()=>{lastN=-1;});
 })();
