@@ -525,6 +525,43 @@ footer{border-top:1px solid rgba(255,255,255,.09)}
 }
 
 </style>
+<style id="kc-style">
+/* ===== Kategorie-Karten mit Bildern / بطاقات التصنيفات بالصور ===== */
+.ch.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 10px;margin:4px 0 28px;flex-wrap:unset}
+.ch.cats .kc{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0;background:transparent;border:0;border-radius:0;box-shadow:none;padding:0;margin:0;color:var(--tx);font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .2s ease}
+.ch.cats .kc:hover{transform:translateY(-3px);box-shadow:none;border-color:transparent}
+.ch.cats .kc:active{transform:scale(.97)}
+.ch.cats .kc:focus-visible{outline:3px solid var(--acc);outline-offset:3px;border-radius:20px}
+.ch.cats .kc-i{position:relative;width:100%;aspect-ratio:1/1;border-radius:20px;overflow:hidden;background:#fff;border:1.5px solid var(--bd);box-shadow:0 3px 10px rgba(8,42,82,.08);display:block;transition:box-shadow .2s ease,border-color .2s ease,transform .2s ease}
+.ch.cats .kc:hover .kc-i{box-shadow:0 10px 22px rgba(8,42,82,.16);border-color:#d6c3a2}
+.ch.cats .kc-i img{display:block;width:100%;height:100%;max-width:none;object-fit:contain;padding:7px;background:#fff;transition:transform .35s ease}
+.ch.cats .kc-i img.cv{object-fit:cover;padding:0}
+.ch.cats .kc:hover .kc-i img{transform:scale(1.07)}
+.ch.cats .kc-i::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,0) 62%,rgba(8,42,82,.07))}
+/* "الكل" – 2×2 Mosaik */
+.ch.cats .kc-m{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:2px;background:var(--bd)}
+.ch.cats .kc-m img{padding:3px;border-radius:0;min-height:0;min-width:0}
+.ch.cats .kc-m img.cv{padding:0}
+.ch.cats .kc:hover .kc-m img{transform:none}
+/* Label */
+.ch.cats .kc-l{display:block;font-size:13px;font-weight:800;line-height:1.25;text-align:center;color:var(--tx);padding:0 2px;transition:color .2s}
+/* Anzahl-Badge */
+.ch.cats .kc-n{position:absolute;z-index:2;top:6px;inset-inline-start:6px;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:rgba(8,42,82,.92);color:#fff;font:800 10.5px/19px inherit;font-style:normal;text-align:center;box-shadow:0 2px 6px rgba(8,42,82,.25)}
+/* Geschenk-Badge (Kombo) */
+.ch.cats .kc-g{position:absolute;z-index:2;bottom:7px;inset-inline-end:7px;width:26px;height:26px;border-radius:50%;background:var(--acc);display:grid;place-items:center;font-size:14px;line-height:1;box-shadow:0 3px 8px rgba(247,148,29,.45)}
+/* Aktiv */
+.ch.cats .kc.on{transform:translateY(-2px)}
+.ch.cats .kc.on .kc-i{border-color:var(--navy);box-shadow:0 0 0 2.5px var(--navy),0 12px 24px rgba(8,42,82,.24)}
+.ch.cats .kc.on .kc-l{color:var(--navy)}
+.ch.cats .kc.on .kc-l::after{content:"";display:block;width:34px;height:3px;margin:5px auto 0;border-radius:3px;background:var(--acc)}
+.ch.cats .kc.on .kc-n{background:var(--acc)}
+@media(min-width:760px){
+ .ch.cats{grid-template-columns:repeat(8,minmax(0,1fr));gap:16px}
+ .ch.cats .kc-l{font-size:15px}
+}
+@media(max-width:360px){.ch.cats{gap:10px 8px}.ch.cats .kc-l{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.ch.cats .kc,.ch.cats .kc-i,.ch.cats .kc-i img{transition:none}}
+</style>
 </head>
 <body>
 <nav><div class="w">
@@ -678,7 +715,7 @@ footer{border-top:1px solid rgba(255,255,255,.09)}
 
 <section id="shop"><div class="w">
 <h2 data-t="shopT"></h2><p class="sub" data-t="shopS"></p>
-<div class="ch" id="ch"></div><div class="grid" id="gr"></div>
+<div class="ch cats" id="ch"></div><div class="grid" id="gr"></div>
 </div></section>
 
 <section id="contact" class="ct"><div class="w">
@@ -916,11 +953,27 @@ function openDet(id){dId=id;gIdx=0;drawDet();$("md").classList.add("on");documen
 function closeDet(){$("md").classList.remove("on");document.body.style.overflow=""}
 function drawDet(){const d=DET[dId],x=d[L],p=P.find(q=>q[0]===dId),g=d.gal.map(k=>k==="@c"?imgOf(p,(sel[dId]||{}).c):k==="@m"?(IM["hm"+(sel[dId]||{}).c]||null):k==="@s"?(IM["shirtmodel_"+(sel[dId]||{}).c]||IM.shirtmodel):(IM[k]||k)).filter(Boolean);
 $("mdc").innerHTML=`<button class="mx" data-x2="1" aria-label="close">✕</button><div class="mg"><img src="${g[gIdx]}" alt=""></div><div class="mt">${g.map((u,i)=>`<button data-g="${i}" class="${i===gIdx?"on":""}"><img src="${u}" alt=""></button>`).join("")}</div><div class="mb"><h2>${x.t}</h2><div class="mp">${prc(p)}</div>${x.rows.length?`<h3>${x.tl}</h3><table>${x.rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("")}</table>`:""}${x.f.length?`<h3>${x.ft}</h3><${d.ol?"ol":"ul"}>${x.f.map(i=>`<li>${i}</li>`).join("")}</${d.ol?"ol":"ul"}>`:""}<p class="mn">${x.n}</p><button class="add" data-a="${p[0]}"${(p.out||selOut(p[0]))?" disabled":""}>${(p.out||selOut(p[0]))?T[L].so:T[L].add}</button>${wishHtml(p)}</div>`}
+/* Kategorie-Karten (Bilder aus den vorhandenen Produktfotos – keine zusätzlichen Dateien) */
+const KCATS=["all","combo","rods","reels","lures","tackle","wear","bags"];
+const KIMG={combo:"combo",rods:"rod",reels:"reel",lures:"bait",tackle:"line",wear:"h01",bags:"bag40"};
+function drawCats(d){
+ const el=$("ch");
+ if(el.dataset.k!==L||el.children.length!==KCATS.length){
+  const im=k=>IM[k]||"",cv=k=>k==="bait"?" cv":"";
+  el.innerHTML=KCATS.map(c=>{
+   const n=c==="all"?P.length:P.filter(p=>p[1]===c).length,on=c===cat;
+   const pic=c==="all"
+    ?`<span class="kc-i kc-m">${["rod","reel","bait","cap"].map(k=>`<img class="${cv(k).trim()}" src="${im(k)}" alt="" draggable="false">`).join("")}</span>`
+    :`<span class="kc-i"><img class="${cv(KIMG[c]).trim()}" src="${im(KIMG[c])}" alt="" draggable="false">${c==="combo"?'<b class="kc-g" aria-hidden="true">🎁</b>':""}</span>`;
+   return `<button type="button" class="kc${on?" on":""}" data-c="${c}" aria-pressed="${on}"><i class="kc-n">${n}</i>${pic}<span class="kc-l">${d[c]}</span></button>`}).join("");
+  el.dataset.k=L;
+ }else el.querySelectorAll(".kc").forEach(b=>{const on=b.dataset.c===cat;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
+}
 function render(){
  const d=T[L];
  document.documentElement.lang=L;document.querySelectorAll(".sc-arr").forEach(a=>a.textContent=L==="ar"?"←":"→");document.documentElement.dir=L==="ar"?"rtl":"ltr";
  document.querySelectorAll("[data-t]").forEach(e=>e.textContent=d[e.dataset.t]);renderLegal();
- $("ch").innerHTML=["all","combo","rods","reels","lures","tackle","wear","bags"].map(c=>`<button class="${c===cat?"on":""}" data-c="${c}">${d[c]}</button>`).join("");
+ drawCats(d);
  $("gr").innerHTML=P.filter(p=>cat==="all"||p[1]===cat).map(p=>`<article class="p${p.out?" out":""}${p[0]===19?" pcombo":""}"><div class="pi${DET[p[0]]?" zm":""}"${DET[p[0]]?` data-d="${p[0]}"`:""}>${DET[p[0]]?`<span class="dt">🔍 ${DT[L]}</span>`:""}${p.old?`<span class="sale">−${p.pc}%</span>`:""}${p[0]===19?`<span class="gf">🎁 ${d.gift}</span>`:""}${p.out?`<span class="so">${d.so}</span>`:""}${isNew(p)?`<span class="nw" data-l="${L}">${L==="fr"?"NOUVEAU":L==="ar"?"جديد":"NEW"}</span>`:""}${p[5]?`<img class="${CT.includes(p[5])?'ct':''}" src="${imgOf(p,(sel[p[0]]||{}).c)}" alt="${nm(p)}">`:p[2]}</div><div class="pb"><h3>${nm(p)}</h3>${sp(p)?`<div class="sp">${sp(p)}</div>`:""}<div class="pr">${prc(p)}</div>${VARS[p[0]]?vhtml(p):""}<button class="add" data-a="${p[0]}"${(p.out||selOut(p[0]))?" disabled":""}>${(p.out||selOut(p[0]))?d.so:d.add}</button>${wishHtml(p)}</div></article>`).join("");
  $("w2").href=wa(d.hw);$("w4").href=wa(d.hw);$("w3").href=wa(d.hw);
  drawer();
