@@ -1,5 +1,5 @@
 // غيّر رقم الإصدار عند تغيير ملفات ثابتة مثل الأيقونات أو الصور
-const CACHE = 'sidi-ifni-v3';
+const CACHE = 'sidi-ifni-v4';
 const ASSETS = [
   './',
   './index.html',
