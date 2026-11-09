@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
+<head><script>(function(){var t=null;try{t=localStorage.getItem("theme")}catch(e){}if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light"}document.documentElement.setAttribute("data-theme",t)})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="manifest" href="manifest.json">
@@ -604,13 +604,61 @@ html[dir="rtl"] .nbar-track{animation-name:nbarR}
 #featured-showcase .showcase-track .p{animation:glowSpin 5s linear infinite!important;will-change:transform,opacity;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 #featured-showcase .showcase-track{backface-visibility:hidden}
 </style>
-</head>
+<style id="dark-mode">
+.tb{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:12px;width:44px;height:44px;font-size:20px;line-height:1;cursor:pointer;display:inline-grid;place-items:center;padding:0;flex:none}
+.tb:focus-visible{outline:2px solid #f7941d;outline-offset:2px}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+/* product cards: dark body, photo area stays white */
+:root[data-theme="dark"] .p{background:#12233a!important;border-color:#22375a!important;color:#eef3fa}
+:root[data-theme="dark"] .p .pb{background:#12233a!important}
+:root[data-theme="dark"] .p h3,:root[data-theme="dark"] .p .vl{color:#eef3fa}
+:root[data-theme="dark"] .p .sp{color:#b4c2d6}
+:root[data-theme="dark"] .p .wn{color:#9fb0c6}
+:root[data-theme="dark"] .p .pr,:root[data-theme="dark"] .p span.cn{color:#7db8f5}
+:root[data-theme="dark"] .p .chip{background:#0f1d33;color:#eef3fa;border-color:#2b4268}
+:root[data-theme="dark"] .p .chip.on{background:#3a2a10;border-color:#f7941d}
+:root[data-theme="dark"] .cs{background:#0f1d33;border-color:#2b4268}
+:root[data-theme="dark"] .cs.on{border-color:#f7941d}
+:root[data-theme="dark"] .p .wish:not(:hover){background:#3b2a12;color:#ffd9a0}
+:root[data-theme="dark"] .p .add:disabled{background:#1f3350;color:#7f93ad}
+/* combo card */
+:root[data-theme="dark"] .p.pcombo{background:linear-gradient(160deg,#3a2c0a,#241b07 55%,#33270a)!important;border-color:#b8860b!important;box-shadow:0 12px 32px -8px rgba(0,0,0,.6),0 0 22px -6px rgba(255,200,60,.35)!important}
+:root[data-theme="dark"] .p.pcombo .pb{background:transparent!important}
+:root[data-theme="dark"] .p.pcombo .pb h3{color:#ffe9a8!important}
+:root[data-theme="dark"] .p.pcombo .sp{color:#f1c76a!important;border-color:#b8860b!important}
+:root[data-theme="dark"] .p.pcombo .pr{color:#ffd166!important}
+:root[data-theme="dark"] .p.pcombo .add:disabled{background:#3a3320!important;color:#a39466!important}
+/* featured showcase */
+:root[data-theme="dark"] #featured-showcase .showcase-track .p{background:linear-gradient(#12233a,#12233a) padding-box,conic-gradient(from var(--glowA),#f7941d,#ffd27a,#5aa2ee,#0b4a8f,#5aa2ee,#ffd27a,#f7941d) border-box!important}
+:root[data-theme="dark"] #featured-showcase .showcase-track .p.pcombo{background:linear-gradient(160deg,#3a2c0a,#241b07 55%,#33270a) padding-box,conic-gradient(from var(--glowA),#b8860b,#ffe27a,#fff6c8,#d4a017,#b8860b) border-box!important}
+:root[data-theme="dark"] #featured-showcase h2{color:#eef3fa}
+:root[data-theme="dark"] #featured-showcase p{color:#9fb0c6}
+:root[data-theme="dark"] #featured-showcase .showcase-kicker{color:#e0b567}
+:root[data-theme="dark"] #featured-showcase .showcase-link{color:#e0b567}
+/* categories */
+:root[data-theme="dark"] .ch.cats .kc.on .kc-l{color:#7db8f5}
+:root[data-theme="dark"] .ch.cats .kc.on .kc-i{border-color:#5aa2ee;box-shadow:0 0 0 2.5px #5aa2ee,0 12px 24px rgba(0,0,0,.4)}
+/* product details window */
+:root[data-theme="dark"] #mdc{background:#12233a;color:#eef3fa}
+:root[data-theme="dark"] .mb,:root[data-theme="dark"] .mb h2,:root[data-theme="dark"] .mb ul,:root[data-theme="dark"] .mb ol{color:#eef3fa}
+:root[data-theme="dark"] .mb h3{color:#7db8f5}
+:root[data-theme="dark"] .mb th,:root[data-theme="dark"] .mb td{border-color:#2b4268;color:#eef3fa}
+:root[data-theme="dark"] .mb th{background:#1a2f4d}
+/* cart drawer buttons */
+:root[data-theme="dark"] .dn:not(:hover){background:#12233a;color:#eef3fa;border-color:#5aa2ee}
+:root[data-theme="dark"] #mdc .mp{color:#7db8f5}
+:root[data-theme="dark"] #mdc .mn,:root[data-theme="dark"] #mdc .wn{color:#9fb0c6}
+</style><style id="float-fix">
+/* sound button always on the side opposite to the WhatsApp button (RTL: left, LTR: right) */
+html #coastal-sound-toggle{left:auto;right:auto;inset-inline-start:auto;inset-inline-end:10px}
+</style></head>
 <body>
 <nav><div class="w">
 <a class="brand" href="#top"><img src="img_d5158ca0.png" alt="SIDI IFNI Outdoor"><span>SIDI IFNI OUTDOOR</span></a>
 <a class="lk" href="#shop" data-t="nShop"></a><a class="lk" href="#contact" data-t="nCt"></a>
 <select id="lang" aria-label="Language"><option value="ar">العربية</option><option value="fr">Français</option></select>
-<button class="cb" id="cb" aria-label="Cart">🛒<b id="cn">0</b></button>
+<button class="tb" id="tm" type="button" aria-label="Theme">🌙</button><button class="cb" id="cb" aria-label="Cart">🛒<b id="cn">0</b></button>
 </div>
 <div class="nbar" role="status" aria-live="off"><div class="nbar-win"><div class="nbar-track"><div class="nbar-g"><span class="nbar-i"><span class="nbar-d" aria-hidden="true"></span><span class="nbar-t" data-t="beta"></span></span><span class="nbar-i" aria-hidden="true"><span class="nbar-d" aria-hidden="true"></span><span class="nbar-t" data-t="beta"></span></span><span class="nbar-i" aria-hidden="true"><span class="nbar-d" aria-hidden="true"></span><span class="nbar-t" data-t="beta"></span></span><span class="nbar-i" aria-hidden="true"><span class="nbar-d" aria-hidden="true"></span><span class="nbar-t" data-t="beta"></span></span><span class="nbar-i" aria-hidden="true"><span class="nbar-d" aria-hidden="true"></span><span class="nbar-t" data-t="beta"></span></span><span class="nbar-i" aria-hidden="true"><span class="nbar-d" aria-hidden="true"></span><span class="nbar-t" data-t="beta"></span></span></div><div class="nbar-g" aria-hidden="true"><span class="nbar-i" aria-hidden="true"><span class="nbar-d" aria-hidden="true"></span><span class="nbar-t" data-t="beta"></span></span><span class="nbar-i" aria-hidden="true"><span class="nbar-d" aria-hidden="true"></span><span class="nbar-t" data-t="beta"></span></span><span class="nbar-i" aria-hidden="true"><span class="nbar-d" aria-hidden="true"></span><span class="nbar-t" data-t="beta"></span></span><span class="nbar-i" aria-hidden="true"><span class="nbar-d" aria-hidden="true"></span><span class="nbar-t" data-t="beta"></span></span><span class="nbar-i" aria-hidden="true"><span class="nbar-d" aria-hidden="true"></span><span class="nbar-t" data-t="beta"></span></span><span class="nbar-i" aria-hidden="true"><span class="nbar-d" aria-hidden="true"></span><span class="nbar-t" data-t="beta"></span></span></div></div></div></div>
 </nav>
@@ -1586,5 +1634,21 @@ html{scroll-padding-top:128px}
  window.addEventListener("resize",fit);window.addEventListener("load",fit);fit();
 })();
 </script>
-</body>
+<script>
+(function(){var r=document.documentElement,b=document.getElementById("tm");if(!b)return;
+var L={ar:["الوضع الداكن","الوضع الفاتح"],fr:["Mode sombre","Mode clair"]};
+function lab(){var l=(r.lang||"ar").slice(0,2),t=L[l]||L.ar,d=r.getAttribute("data-theme")==="dark";
+b.textContent=d?"☀️":"🌙";b.setAttribute("aria-label",d?t[1]:t[0]);b.title=d?t[1]:t[0]}
+b.addEventListener("click",function(){var n=r.getAttribute("data-theme")==="dark"?"light":"dark";r.setAttribute("data-theme",n);try{localStorage.setItem("theme",n)}catch(e){}lab()});
+var s=document.getElementById("lang");if(s)s.addEventListener("change",function(){setTimeout(lab,0)});
+lab()})();
+</script><script>
+(function(){var sel=document.getElementById("lang");
+function upd(){var b=document.getElementById("coastal-sound-toggle");if(!b)return;
+var fr=(document.documentElement.lang||"ar").slice(0,2)==="fr",sp=b.querySelectorAll("span")[1];
+if(sp)sp.textContent=fr?"Son de la mer":"صوت البحر";
+if(b.getAttribute("aria-pressed")!=="true")b.setAttribute("aria-label",fr?"Activer les sons calmes de la mer":"تشغيل أصوات البحر الهادئة")}
+if(sel)sel.addEventListener("change",function(){setTimeout(upd,0)});
+upd();setTimeout(upd,600);setTimeout(upd,1500)})();
+</script></body>
 </html>
