@@ -1,5 +1,5 @@
 // غيّر رقم الإصدار عند تغيير ملفات ثابتة مثل الأيقونات أو الصور
-const CACHE = 'sidi-ifni-v5';
+const CACHE = 'sidi-ifni-v4';
 const ASSETS = [
   './',
   './index.html',
@@ -43,8 +43,7 @@ self.addEventListener('fetch', e => {
       new Promise(resolve => {
         const fallback = () => caches.match('./index.html').then(r => r || caches.match('./'));
         const timer = setTimeout(() => fallback().then(r => r && resolve(r)), 4000);
-        // no-cache: يتجاوز كاش المتصفح ويتحقق من الخادم دائماً
-        fetch(req, { cache: 'no-cache' })
+        fetch(req)
           .then(res => {
             clearTimeout(timer);
             if (res && res.status === 200) {
