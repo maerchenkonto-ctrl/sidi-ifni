@@ -652,6 +652,20 @@ html[dir="rtl"] .nbar-track{animation-name:nbarR}
 </style><style id="float-fix">
 /* sound button always on the side opposite to the WhatsApp button (RTL: left, LTR: right) */
 html #coastal-sound-toggle{left:auto;right:auto;inset-inline-start:auto;inset-inline-end:10px}
+/* hide the sound button while the cart or product window is open */
+html.panel-open #coastal-sound-toggle{display:none!important}
+</style><style id="gallery-css">
+.p .pi .pg{position:absolute!important;inset:0!important;z-index:1}
+.p .pi .pgt{display:flex;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.p .pi .pgt::-webkit-scrollbar{display:none}
+.p .pi .pgt img,.p .pi .pgt img.ct{position:static!important;inset:auto!important;flex:0 0 100%!important;width:100%!important;height:100%!important;scroll-snap-align:center;scroll-snap-stop:always;-webkit-user-drag:none}
+.p .pi .pd{position:absolute;bottom:9px;inset-inline:0;display:flex;justify-content:center;gap:6px;z-index:3}
+.p .pi .pd i{width:8px;height:8px;border-radius:99px;background:rgba(8,42,82,.28);transition:width .2s,background .2s;cursor:pointer;box-shadow:0 0 0 1px rgba(255,255,255,.7)}
+.p .pi .pd i.on{width:20px;background:#f7941d}
+.p .pi .pd i::after{content:"";position:absolute;inset:-9px -3px}
+.p .pi .pd i{position:relative}
+.p .pi .dt,.p .pi .sale,.p .pi .so,.p .pi .nw,.p .pi .gf{z-index:4}
+.p.out .pi .pd{bottom:48px}
 </style></head>
 <body>
 <nav><div class="w">
@@ -1062,12 +1076,18 @@ function drawCats(d){
   el.dataset.k=L;
  }else el.querySelectorAll(".kc").forEach(b=>{const on=b.dataset.c===cat;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
 }
+const galOf=p=>{const d=DET[p[0]];if(!d||!d.gal)return null;const c=(sel[p[0]]||{}).c;
+ const g=d.gal.map(k=>k==="@c"?imgOf(p,c):k==="@m"?(IM["hm"+c]||null):k==="@s"?(IM["shirtmodel_"+c]||IM.shirtmodel):(IM[k]||k)).filter(Boolean);
+ return g.length>1?g:null};
+const picHtml=p=>{const cls=CT.includes(p[5])?"ct":"",main=imgOf(p,(sel[p[0]]||{}).c),g=galOf(p);
+ if(!g)return `<img loading="lazy" decoding="async" class="${cls}" src="${main}" alt="${nm(p)}">`;
+ return `<div class="pg"><div class="pgt">${g.map((u,i)=>`<img decoding="async" class="${cls}" ${i?`data-src="${u}"`:`src="${u}"`} alt="${nm(p)}${i?" "+(i+1):""}" draggable="false">`).join("")}</div></div><div class="pd" aria-hidden="true">${g.map((_,i)=>`<i data-i="${i}" class="${i?"":"on"}"></i>`).join("")}</div>`};
 function render(){
  const d=T[L];
  document.documentElement.lang=L;document.querySelectorAll(".sc-arr").forEach(a=>a.textContent=L==="ar"?"←":"→");document.documentElement.dir=L==="ar"?"rtl":"ltr";
  document.querySelectorAll("[data-t]").forEach(e=>e.textContent=d[e.dataset.t]);renderLegal();
  drawCats(d);
- $("gr").innerHTML=P.filter(p=>cat==="all"||p[1]===cat).map(p=>`<article class="p${p.out?" out":""}${p[0]===19?" pcombo":""}"><div class="pi${DET[p[0]]?" zm":""}"${DET[p[0]]?` data-d="${p[0]}"`:""}>${DET[p[0]]?`<span class="dt">🔍 ${DT[L]}</span>`:""}${p.old?`<span class="sale">−${p.pc}%</span>`:""}${p[0]===19?`<span class="gf">🎁 ${d.gift}</span>`:""}${p.out?`<span class="so">${d.so}</span>`:""}${isNew(p)?`<span class="nw" data-l="${L}">${L==="fr"?"NOUVEAU":L==="ar"?"جديد":"NEW"}</span>`:""}${p[5]?`<img loading="lazy" decoding="async" class="${CT.includes(p[5])?'ct':''}" src="${imgOf(p,(sel[p[0]]||{}).c)}" alt="${nm(p)}">`:p[2]}</div><div class="pb"><h3>${nm(p)}</h3>${sp(p)?`<div class="sp">${sp(p)}</div>`:""}<div class="pr">${prc(p)}</div>${VARS[p[0]]?vhtml(p):""}<button class="add" data-a="${p[0]}"${(p.out||selOut(p[0]))?" disabled":""}>${(p.out||selOut(p[0]))?d.so:d.add}</button>${wishHtml(p)}</div></article>`).join("");
+ $("gr").innerHTML=P.filter(p=>cat==="all"||p[1]===cat).map(p=>`<article class="p${p.out?" out":""}${p[0]===19?" pcombo":""}"><div class="pi${DET[p[0]]?" zm":""}"${DET[p[0]]?` data-d="${p[0]}"`:""}>${DET[p[0]]?`<span class="dt">🔍 ${DT[L]}</span>`:""}${p.old?`<span class="sale">−${p.pc}%</span>`:""}${p[0]===19?`<span class="gf">🎁 ${d.gift}</span>`:""}${p.out?`<span class="so">${d.so}</span>`:""}${isNew(p)?`<span class="nw" data-l="${L}">${L==="fr"?"NOUVEAU":L==="ar"?"جديد":"NEW"}</span>`:""}${p[5]?picHtml(p):p[2]}</div><div class="pb"><h3>${nm(p)}</h3>${sp(p)?`<div class="sp">${sp(p)}</div>`:""}<div class="pr">${prc(p)}</div>${VARS[p[0]]?vhtml(p):""}<button class="add" data-a="${p[0]}"${(p.out||selOut(p[0]))?" disabled":""}>${(p.out||selOut(p[0]))?d.so:d.add}</button>${wishHtml(p)}</div></article>`).join("");
  $("w2").href=wa(d.hw);$("w4").href=wa(d.hw);$("w3").href=wa(d.hw);
  drawer();
 }
@@ -1253,7 +1273,7 @@ window.addEventListener("resize",run);if(document.fonts&&document.fonts.ready)do
     scheduled=false;
     const cards=Array.from(source.querySelectorAll(':scope > .p'));
     if(!cards.length)return;
-    const originals=cards.map(card=>{const c=card.cloneNode(true);c.removeAttribute('style');return c;});
+    const originals=cards.map(card=>{const c=card.cloneNode(true);c.removeAttribute('style');c.querySelectorAll('.pg').forEach(g=>{const i=g.querySelector('img');if(i)g.replaceWith(i);else g.remove()});c.querySelectorAll('.pd').forEach(d=>d.remove());return c;});
     track.replaceChildren(...originals,...originals.map(c=>c.cloneNode(true)));
     track.querySelectorAll('img').forEach(img=>{img.loading='lazy';img.draggable=false;});
     animation=track.getAnimations().find(a=>a.effect&&a.playState!=='idle')||null;
@@ -1650,5 +1670,23 @@ if(sp)sp.textContent=fr?"Son de la mer":"صوت البحر";
 if(b.getAttribute("aria-pressed")!=="true")b.setAttribute("aria-label",fr?"Activer les sons calmes de la mer":"تشغيل أصوات البحر الهادئة")}
 if(sel)sel.addEventListener("change",function(){setTimeout(upd,0)});
 upd();setTimeout(upd,600);setTimeout(upd,1500)})();
+</script><script>
+(function(){var dr=document.getElementById("dr"),md=document.getElementById("md"),r=document.documentElement;
+function chk(){var o=(dr&&dr.classList.contains("on"))||(md&&md.classList.contains("on"));r.classList.toggle("panel-open",!!o)}
+var mo=new MutationObserver(chk);[dr,md].forEach(function(e){if(e)mo.observe(e,{attributes:true,attributeFilter:["class"]})});chk()})();
+</script><script>
+(function(){var gr=document.getElementById("gr");if(!gr)return;
+function idx(t){return Math.round(Math.abs(t.scrollLeft)/Math.max(1,t.clientWidth))}
+function sync(t){var d=t.closest(".pi").querySelector(".pd");if(!d)return;var n=idx(t);d.querySelectorAll("i").forEach(function(x,i){x.classList.toggle("on",i===n)})}
+document.addEventListener("scroll",function(e){var t=e.target;if(t&&t.classList&&t.classList.contains("pgt"))sync(t)},true);
+document.addEventListener("click",function(e){var d=e.target.closest&&e.target.closest(".pd i");if(!d)return;e.stopPropagation();e.preventDefault();
+ var t=d.closest(".pi").querySelector(".pgt");if(!t)return;var rtl=getComputedStyle(t).direction==="rtl";
+ hydrate(t.parentNode);t.scrollTo({left:(rtl?-1:1)*(+d.dataset.i)*t.clientWidth,behavior:"smooth"})},true);
+function hydrate(pg){pg.querySelectorAll("img[data-src]").forEach(function(i){i.src=i.getAttribute("data-src");i.removeAttribute("data-src")})}
+var io=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){hydrate(e.target);io.unobserve(e.target)}})},{rootMargin:"300px 0px"}):null;
+function watch(){gr.querySelectorAll(".pg").forEach(function(g){if(io)io.observe(g);else hydrate(g)})}
+new MutationObserver(watch).observe(gr,{childList:true});watch();
+["touchstart","pointerdown","mouseenter"].forEach(function(ev){gr.addEventListener(ev,function(e){var g=e.target.closest&&e.target.closest(".pg");if(g)hydrate(g)},{passive:true,capture:true})});
+})();
 </script></body>
 </html>
