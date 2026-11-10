@@ -891,7 +891,7 @@ fr:{nShop:"Boutique",nCamp:"Camp",nCt:"Contact",eye:"Sidi Ifni · Maroc",h1:"Viv
 };
 // id, categoría, emoji, Preis MAD (Beispielpreise!), Namen de|en|fr|es|ar
 const P=[
-[19,"combo","🎁",849,"Angel-Set: Rute + Rolle + Schnur + Cap geschenkt|Fishing combo: rod + reel + braided line + free cap|Pack pêche : canne + moulinet + tresse + casquette offerte|Pack de pesca: caña + carrete + línea trenzada + gorra de regalo|كومبو الصيد: قصبة + بكرة + خيط + قبعة هدية","combo","Spar-Preis · Cap gratis|Bundle price · free cap|Prix du pack · casquette offerte|Precio del pack · gorra gratis|سعر الكومبو · القبعة مجاناً"],
+[19,"combo","🎁",849,"Angel-Set: Rute + Rolle + Schnur + Cap geschenkt|Fishing combo: rod + reel + braided line + free cap|Pack pêche : canne + moulinet + tresse + casquette offerte|Pack de pesca: caña + carrete + línea trenzada + gorra de regalo|حزمة الصيد: قصبة + بكرة + خيط + قبعة هدية","combo","Spar-Preis · Cap gratis|Bundle price · free cap|Prix du pack · casquette offerte|Precio del pack · gorra gratis|سعر الحزمة · القبعة مجاناً"],
 [1,"rods","🎣",499,"Spinnrute 2,50–2,70 m|Spinning rod 2.50–2.70 m|Canne spinning 2,50–2,70 m|Caña spinning 2,50–2,70 m|قصبة سبينينغ 2.50 – 2.70 م","rod"],
 [3,"reels","⚙️",299,"Spinnrolle 4000|Spinning reel 4000|Moulinet spinning 4000|Carrete spinning 4000|بكرة سبينينغ 4000","reel"],
 [17,"reels","⚙️",400,"Abu Garcia Spinnrolle 4000|Abu Garcia spinning reel 4000|Moulinet spinning Abu Garcia 4000|Carrete spinning Abu Garcia 4000|بكرة سبينينغ Abu Garcia 4000","abu","5,5:1 · Drag 15 kg · 9+1|5.5:1 · drag 15 kg · 9+1|5,5:1 · drag 15 kg · 9+1|5,5:1 · drag 15 kg · 9+1|5.5:1 · فرملة 15 كغ · 9+1"],
@@ -1014,17 +1014,17 @@ IM.hm07="hm07.webp";
 IM.hm08="hm08.webp";
 DET[15]={gal:["@c","@m"],rows:[]};
 [9,10,13,15].forEach(id=>{const q=P.find(x=>x[0]===id);["fr","ar"].forEach(l=>{DET[id][l]={t:q[4].split("|")[LI[l]],tl:"",rows:[],ft:"",f:[],n:""}})});
-Object.assign(T.ar,{combo:"كومبو 🎁",gift:"قبعة هدية"});Object.assign(T.fr,{combo:"Packs 🎁",gift:"Casquette offerte"});
+Object.assign(T.ar,{combo:"حزمة + 🎁",gift:"قبعة هدية"});Object.assign(T.fr,{combo:"Packs 🎁",gift:"Casquette offerte"});
 DET[19]={gal:["combo","rod","reel","line","cap"],
  get ar(){return mkCombo("ar")},get fr(){return mkCombo("fr")}};
 function mkCombo(l){const g=i=>P.find(x=>x[0]===i),n=q=>q[4].split("|")[LI[l]],ar=l==="ar";
  const paid=[1,3,8].map(i=>g(i)).filter(Boolean),cap=g(10);
  const rows=paid.map(q=>[n(q),fm(q[3])]);if(cap)rows.push([n(cap),"🎁 "+(ar?"مجانية":"Offerte")]);
  const p=g(19);
- return {t:n(p),tl:ar?"محتويات الكومبو":"Contenu du pack",rows:rows,
-  ft:ar?"لماذا الكومبو؟":"Pourquoi ce pack ?",
-  f:ar?["كل ما تحتاجه للبدء بالصيد بالسبينينغ فـ طلب واحد","القبعة هدية مجانية مع الكومبو","سعر الكومبو أقل من شراء المنتجات منفصلة"]:["Tout pour débuter la pêche au spinning en une seule commande","La casquette est offerte avec le pack","Prix du pack inférieur à l’achat séparé"],
-  n:ar?"الكومبو متوفر فقط إذا كانت كل مكوناته متوفرة.":"Le pack n’est disponible que si tous ses articles sont en stock."}}
+ return {t:n(p),tl:ar?"محتويات الحزمة":"Contenu du pack",rows:rows,
+  ft:ar?"لماذا الحزمة؟":"Pourquoi ce pack ?",
+  f:ar?["كل ما تحتاجه للبدء بالصيد بالسبينينغ فـ طلب واحد","القبعة هدية مجانية مع الحزمة","سعر الحزمة أقل من شراء المنتجات منفصلة"]:["Tout pour débuter la pêche au spinning en une seule commande","La casquette est offerte avec le pack","Prix du pack inférieur à l’achat séparé"],
+  n:ar?"الحزمة متوفرة فقط إذا كانت كل مكوناتها متوفرة.":"Le pack n’est disponible que si tous ses articles sont en stock."}}
 Object.assign(T.ar,{lgH:"المعلومات القانونية",lgA:"بيانات صاحب المتجر",lgB:"سياسة الخصوصية",lgC:"شروط البيع والتوصيل",lgD:"حق التراجع والإرجاع"});
 Object.assign(T.fr,{lgH:"Informations légales",lgA:"Mentions légales",lgB:"Politique de confidentialité",lgC:"Conditions de vente et de livraison",lgD:"Droit de rétractation et de retour"});
 const LEGAL={
