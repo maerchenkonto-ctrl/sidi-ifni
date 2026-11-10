@@ -670,6 +670,13 @@ html.panel-open #coastal-sound-toggle{display:none!important}
 .p .pi .szb small{font-size:13px;font-weight:700;opacity:.92}
 .p .pi .szb b{background:#f7941d;color:#fff;min-width:28px;height:28px;border-radius:999px;display:grid;place-items:center;padding:0 7px;font-size:15px;font-weight:800;direction:ltr}
 .p .pi .sale~.szb{top:46px}
+.p .pi .pgt .pv{flex:0 0 100%;height:100%;position:relative;scroll-snap-align:center;scroll-snap-stop:always;cursor:pointer;background:#fff}
+.p .pi .pgt .pv>img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important}
+.p .pi .pv .ppb{position:absolute;inset:0;margin:auto;width:62px;height:62px;border-radius:50%;background:rgba(8,42,82,.88);color:#fff;font-size:24px;display:grid;place-items:center;padding-inline-start:4px;box-shadow:0 4px 16px rgba(0,0,0,.35);border:2px solid rgba(255,255,255,.85);pointer-events:none}
+.p .pi .pv video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff;display:block}
+.mg video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;display:block}
+.mt button.mv{position:relative}
+.mt button .ppt{position:absolute;inset:0;margin:auto;width:26px;height:26px;border-radius:50%;background:rgba(8,42,82,.88);color:#fff;font-size:12px;display:grid;place-items:center;padding-inline-start:2px}
 </style></head>
 <body>
 <nav><div class="w">
@@ -1062,8 +1069,8 @@ const DT={ar:"تفاصيل",fr:"Détails"};
 let gIdx=0,dId=0;
 function openDet(id){dId=id;gIdx=0;drawDet();$("md").classList.add("on");document.body.style.overflow="hidden"}
 function closeDet(){$("md").classList.remove("on");document.body.style.overflow=""}
-function drawDet(){const d=DET[dId],x=d[L],p=P.find(q=>q[0]===dId),g=d.gal.map(k=>k==="@c"?imgOf(p,(sel[dId]||{}).c):k==="@m"?(IM["hm"+(sel[dId]||{}).c]||null):k==="@s"?(IM["shirtmodel_"+(sel[dId]||{}).c]||IM.shirtmodel):(IM[k]||k)).filter(Boolean);{const m=p[5]?imgOf(p,(sel[dId]||{}).c):null;if(m&&g.indexOf(m)<0)g.unshift(m)}
-$("mdc").innerHTML=`<button class="mx" data-x2="1" aria-label="close">✕</button><div class="mg"><img src="${g[gIdx]}" alt=""></div><div class="mt">${g.map((u,i)=>`<button data-g="${i}" class="${i===gIdx?"on":""}"><img src="${u}" alt=""></button>`).join("")}</div><div class="mb"><h2>${x.t}</h2><div class="mp">${prc(p)}</div>${x.rows.length?`<h3>${x.tl}</h3><table>${x.rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("")}</table>`:""}${x.f.length?`<h3>${x.ft}</h3><${d.ol?"ol":"ul"}>${x.f.map(i=>`<li>${i}</li>`).join("")}</${d.ol?"ol":"ul"}>`:""}<p class="mn">${x.n}</p><button class="add" data-a="${p[0]}"${(p.out||selOut(p[0]))?" disabled":""}>${(p.out||selOut(p[0]))?T[L].so:T[L].add}</button>${wishHtml(p)}</div>`}
+function drawDet(){const d=DET[dId],x=d[L],p=P.find(q=>q[0]===dId),g=d.gal.map(k=>k==="@c"?imgOf(p,(sel[dId]||{}).c):k==="@m"?(IM["hm"+(sel[dId]||{}).c]||null):k==="@s"?(IM["shirtmodel_"+(sel[dId]||{}).c]||IM.shirtmodel):(IM[k]||k)).filter(Boolean);{const m=p[5]?imgOf(p,(sel[dId]||{}).c):null;if(m&&g.indexOf(m)<0)g.unshift(m)}if(VID[dId])g.push("@vid");
+$("mdc").innerHTML=`<button class="mx" data-x2="1" aria-label="close">✕</button><div class="mg">${g[gIdx]==="@vid"?`<video src="${VID[dId].src}" poster="${VID[dId].poster}" controls autoplay muted loop playsinline></video>`:`<img src="${g[gIdx]}" alt="">`}</div><div class="mt">${g.map((u,i)=>`<button data-g="${i}" class="${i===gIdx?"on":""}${u==="@vid"?" mv":""}"><img src="${u==="@vid"?VID[dId].poster:u}" alt="">${u==="@vid"?`<span class="ppt">▶</span>`:""}</button>`).join("")}</div><div class="mb"><h2>${x.t}</h2><div class="mp">${prc(p)}</div>${x.rows.length?`<h3>${x.tl}</h3><table>${x.rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("")}</table>`:""}${x.f.length?`<h3>${x.ft}</h3><${d.ol?"ol":"ul"}>${x.f.map(i=>`<li>${i}</li>`).join("")}</${d.ol?"ol":"ul"}>`:""}<p class="mn">${x.n}</p><button class="add" data-a="${p[0]}"${(p.out||selOut(p[0]))?" disabled":""}>${(p.out||selOut(p[0]))?T[L].so:T[L].add}</button>${wishHtml(p)}</div>`}
 /* Kategorie-Karten (Bilder aus den vorhandenen Produktfotos – keine zusätzlichen Dateien) */
 const KCATS=["all","combo","rods","reels","lures","tackle","wear","bags"];
 const KIMG={combo:"combo",rods:"rod",reels:"reel",lures:"bait",tackle:"line",wear:"h01",bags:"bag40"};
@@ -1080,13 +1087,15 @@ function drawCats(d){
   el.dataset.k=L;
  }else el.querySelectorAll(".kc").forEach(b=>{const on=b.dataset.c===cat;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
 }
+const VID={18:{src:"bag40_video.mp4",poster:"bag40_poster.webp"}};
 const galOf=p=>{const d=DET[p[0]];if(!d||!d.gal)return null;const c=(sel[p[0]]||{}).c;
  const g=d.gal.map(k=>k==="@c"?imgOf(p,c):k==="@m"?(IM["hm"+c]||null):k==="@s"?(IM["shirtmodel_"+c]||IM.shirtmodel):(IM[k]||k)).filter(Boolean);
  const m=p[5]?imgOf(p,c):null;if(m&&g.indexOf(m)<0)g.unshift(m);
+ if(VID[p[0]])g.push("@vid");
  return g.length>1?g:null};
 const picHtml=p=>{const cls=CT.includes(p[5])?"ct":"",main=imgOf(p,(sel[p[0]]||{}).c),g=galOf(p);
  if(!g)return `<img loading="lazy" decoding="async" class="${cls}" src="${main}" alt="${nm(p)}">`;
- return `<div class="pg"><div class="pgt">${g.map((u,i)=>`<img decoding="async" class="${cls}" ${i?`data-src="${u}"`:`src="${u}"`} alt="${nm(p)}${i?" "+(i+1):""}" draggable="false">`).join("")}</div></div><div class="pd" aria-hidden="true">${g.map((_,i)=>`<i data-i="${i}" class="${i?"":"on"}"></i>`).join("")}</div>`};
+ return `<div class="pg"><div class="pgt">${g.map((u,i)=>u==="@vid"?`<div class="pv" data-vsrc="${VID[p[0]].src}" onclick="pvClick(event,this)"><img data-src="${VID[p[0]].poster}" alt="${nm(p)} video" draggable="false"><span class="ppb" aria-hidden="true">▶</span></div>`:`<img decoding="async" class="${cls}" ${i?`data-src="${u}"`:`src="${u}"`} alt="${nm(p)}${i?" "+(i+1):""}" draggable="false">`).join("")}</div></div><div class="pd" aria-hidden="true">${g.map((_,i)=>`<i data-i="${i}" class="${i?"":"on"}"></i>`).join("")}</div>`};
 function render(){
  const d=T[L];
  document.documentElement.lang=L;document.querySelectorAll(".sc-arr").forEach(a=>a.textContent=L==="ar"?"←":"→");document.documentElement.dir=L==="ar"?"rtl":"ltr";
@@ -1682,7 +1691,7 @@ var mo=new MutationObserver(chk);[dr,md].forEach(function(e){if(e)mo.observe(e,{
 </script><script>
 (function(){var gr=document.getElementById("gr");if(!gr)return;
 function idx(t){return Math.round(Math.abs(t.scrollLeft)/Math.max(1,t.clientWidth))}
-function sync(t){var d=t.closest(".pi").querySelector(".pd");if(!d)return;var n=idx(t);d.querySelectorAll("i").forEach(function(x,i){x.classList.toggle("on",i===n)})}
+function sync(t){var d=t.closest(".pi").querySelector(".pd");if(!d)return;var n=idx(t);d.querySelectorAll("i").forEach(function(x,i){x.classList.toggle("on",i===n)});t.querySelectorAll("video").forEach(function(v){if(Array.prototype.indexOf.call(t.children,v.parentNode)!==n)v.pause()})}
 document.addEventListener("scroll",function(e){var t=e.target;if(t&&t.classList&&t.classList.contains("pgt"))sync(t)},true);
 document.addEventListener("click",function(e){var d=e.target.closest&&e.target.closest(".pd i");if(!d)return;e.stopPropagation();e.preventDefault();
  var t=d.closest(".pi").querySelector(".pgt");if(!t)return;var rtl=getComputedStyle(t).direction==="rtl";
@@ -1692,6 +1701,14 @@ var io=("IntersectionObserver" in window)?new IntersectionObserver(function(es){
 function watch(){gr.querySelectorAll(".pg").forEach(function(g){if(io)io.observe(g);else hydrate(g)})}
 new MutationObserver(watch).observe(gr,{childList:true});watch();
 ["touchstart","pointerdown","mouseenter"].forEach(function(ev){gr.addEventListener(ev,function(e){var g=e.target.closest&&e.target.closest(".pg");if(g)hydrate(g)},{passive:true,capture:true})});
+})();
+</script><script>
+(function(){var vio=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting&&e.target.pause)e.target.pause()})},{threshold:.15}):null;
+window.pvClick=function(e,el){e.stopPropagation();if(el.querySelector("video"))return;
+var v=document.createElement("video");v.src=el.getAttribute("data-vsrc");v.muted=true;v.defaultMuted=true;v.loop=true;v.autoplay=true;v.controls=true;v.playsInline=true;v.setAttribute("playsinline","");v.preload="auto";
+el.appendChild(v);var b=el.querySelector(".ppb");if(b)b.style.display="none";
+var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});if(vio)vio.observe(v)};
+document.addEventListener("visibilitychange",function(){if(document.hidden)document.querySelectorAll("video").forEach(function(v){v.pause()})});
 })();
 </script></body>
 </html>
