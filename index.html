@@ -1087,7 +1087,7 @@ function drawCats(d){
   el.dataset.k=L;
  }else el.querySelectorAll(".kc").forEach(b=>{const on=b.dataset.c===cat;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
 }
-const VID={18:{src:"bag40_video.mp4",poster:"bag40_poster.webp"}};
+const VID={6:{src:"bait_video.mp4",poster:"bait_poster.webp"},18:{src:"bag40_video.mp4",poster:"bag40_poster.webp"}};
 const galOf=p=>{const d=DET[p[0]];if(!d||!d.gal)return null;const c=(sel[p[0]]||{}).c;
  const g=d.gal.map(k=>k==="@c"?imgOf(p,c):k==="@m"?(IM["hm"+c]||null):k==="@s"?(IM["shirtmodel_"+c]||IM.shirtmodel):(IM[k]||k)).filter(Boolean);
  const m=p[5]?imgOf(p,c):null;if(m&&g.indexOf(m)<0)g.unshift(m);
