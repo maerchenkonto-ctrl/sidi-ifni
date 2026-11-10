@@ -1058,7 +1058,7 @@ const DT={ar:"تفاصيل",fr:"Détails"};
 let gIdx=0,dId=0;
 function openDet(id){dId=id;gIdx=0;drawDet();$("md").classList.add("on");document.body.style.overflow="hidden"}
 function closeDet(){$("md").classList.remove("on");document.body.style.overflow=""}
-function drawDet(){const d=DET[dId],x=d[L],p=P.find(q=>q[0]===dId),g=d.gal.map(k=>k==="@c"?imgOf(p,(sel[dId]||{}).c):k==="@m"?(IM["hm"+(sel[dId]||{}).c]||null):k==="@s"?(IM["shirtmodel_"+(sel[dId]||{}).c]||IM.shirtmodel):(IM[k]||k)).filter(Boolean);
+function drawDet(){const d=DET[dId],x=d[L],p=P.find(q=>q[0]===dId),g=d.gal.map(k=>k==="@c"?imgOf(p,(sel[dId]||{}).c):k==="@m"?(IM["hm"+(sel[dId]||{}).c]||null):k==="@s"?(IM["shirtmodel_"+(sel[dId]||{}).c]||IM.shirtmodel):(IM[k]||k)).filter(Boolean);{const m=p[5]?imgOf(p,(sel[dId]||{}).c):null;if(m&&g.indexOf(m)<0)g.unshift(m)}
 $("mdc").innerHTML=`<button class="mx" data-x2="1" aria-label="close">✕</button><div class="mg"><img src="${g[gIdx]}" alt=""></div><div class="mt">${g.map((u,i)=>`<button data-g="${i}" class="${i===gIdx?"on":""}"><img src="${u}" alt=""></button>`).join("")}</div><div class="mb"><h2>${x.t}</h2><div class="mp">${prc(p)}</div>${x.rows.length?`<h3>${x.tl}</h3><table>${x.rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("")}</table>`:""}${x.f.length?`<h3>${x.ft}</h3><${d.ol?"ol":"ul"}>${x.f.map(i=>`<li>${i}</li>`).join("")}</${d.ol?"ol":"ul"}>`:""}<p class="mn">${x.n}</p><button class="add" data-a="${p[0]}"${(p.out||selOut(p[0]))?" disabled":""}>${(p.out||selOut(p[0]))?T[L].so:T[L].add}</button>${wishHtml(p)}</div>`}
 /* Kategorie-Karten (Bilder aus den vorhandenen Produktfotos – keine zusätzlichen Dateien) */
 const KCATS=["all","combo","rods","reels","lures","tackle","wear","bags"];
@@ -1078,6 +1078,7 @@ function drawCats(d){
 }
 const galOf=p=>{const d=DET[p[0]];if(!d||!d.gal)return null;const c=(sel[p[0]]||{}).c;
  const g=d.gal.map(k=>k==="@c"?imgOf(p,c):k==="@m"?(IM["hm"+c]||null):k==="@s"?(IM["shirtmodel_"+c]||IM.shirtmodel):(IM[k]||k)).filter(Boolean);
+ const m=p[5]?imgOf(p,c):null;if(m&&g.indexOf(m)<0)g.unshift(m);
  return g.length>1?g:null};
 const picHtml=p=>{const cls=CT.includes(p[5])?"ct":"",main=imgOf(p,(sel[p[0]]||{}).c),g=galOf(p);
  if(!g)return `<img loading="lazy" decoding="async" class="${cls}" src="${main}" alt="${nm(p)}">`;
