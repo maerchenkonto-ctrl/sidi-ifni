@@ -1,12 +1,15 @@
 // غيّر رقم الإصدار عند تغيير ملفات ثابتة مثل الأيقونات أو الصور
-const CACHE = 'sidi-ifni-v5';
+const CACHE = 'sidi-ifni-v6';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
-  './icon-maskable-512.png'
+  './icon-maskable-512.png',
+  './fonts/fonts.css',
+  './fonts/Cairo-Variable.woff',
+  './fonts/PlayfairDisplay-Variable.woff'
 ];
 
 self.addEventListener('install', e => {

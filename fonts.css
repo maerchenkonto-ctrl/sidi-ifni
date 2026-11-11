@@ -1,0 +1,15 @@
+/* Lokale Schriften – kein Aufruf von Google-Servern */
+@font-face {
+  font-family: "Cairo";
+  src: url("Cairo-Variable.woff") format("woff");
+  font-weight: 200 1000;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Playfair Display";
+  src: url("PlayfairDisplay-Variable.woff") format("woff");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
