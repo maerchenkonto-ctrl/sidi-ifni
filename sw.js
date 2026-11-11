@@ -1,5 +1,5 @@
 // غيّر رقم الإصدار عند تغيير ملفات ثابتة مثل الأيقونات أو الصور
-const CACHE = 'sidi-ifni-v4';
+const CACHE = 'sidi-ifni-v5';
 const ASSETS = [
   './',
   './index.html',
@@ -36,6 +36,7 @@ self.addEventListener('fetch', e => {
   if (url.origin !== self.location.origin) return;
   // الفيديو يستخدم طلبات Range والردود الجزئية (206) لا يمكن تخزينها
   if (req.headers.has('range')) return;
+  if (url.pathname.endsWith('/sw.js')) return;
 
   // الصفحة: الشبكة أولاً حتى يرى الزبون آخر نسخة، وإن تأخرت الشبكة نستخدم النسخة المخزنة
   if (req.mode === 'navigate') {
@@ -46,7 +47,7 @@ self.addEventListener('fetch', e => {
         fetch(req)
           .then(res => {
             clearTimeout(timer);
-            if (res && res.status === 200) {
+            if (res && res.status === 200 && res.type === 'basic') {
               const copy = res.clone();
               caches.open(CACHE).then(c => c.put('./index.html', copy));
             }
@@ -67,7 +68,7 @@ self.addEventListener('fetch', e => {
       const hit = await c.match(req);
       const net = fetch(req)
         .then(res => {
-          if (res && res.status === 200) c.put(req, res.clone());
+          if (res && res.status === 200 && res.type === 'basic') c.put(req, res.clone());
           return res;
         })
         .catch(() => null);
