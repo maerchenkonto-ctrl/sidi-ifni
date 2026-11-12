@@ -1812,7 +1812,7 @@ function setup(){
  timer=setTimeout(step,900);
 }
 function schedule(){setTimeout(setup,90)}
-function onMut(){if(sig()===lastSig)return;if(document.documentElement.lang!==lastLang&&lastLang!==null){t.classList.remove("tw-on");sb.classList.remove("tw-on")}schedule()}
+var restarts=0;function onMut(){if(segs.length&&restarts<4){var L=segs[segs.length-1];if(!sb.contains(L.typed)){restarts++;clearTimeout(timer);segs=[];lastSig="";lastLang=null;t.classList.remove("tw-on");sb.classList.remove("tw-on");schedule();return}}if(sig()===lastSig)return;if(document.documentElement.lang!==lastLang&&lastLang!==null){t.classList.remove("tw-on");sb.classList.remove("tw-on")}schedule()}
 new MutationObserver(onMut).observe(t,{childList:true,characterData:true,subtree:true});
 new MutationObserver(onMut).observe(sb,{childList:true,characterData:true,subtree:true});
 schedule();
