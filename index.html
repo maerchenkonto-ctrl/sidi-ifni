@@ -1799,27 +1799,24 @@ function setup(){
  var w=sp(),wt=sp(),wr=sp("tw-r");sb.textContent="";w.appendChild(wt);w.appendChild(wr);wr.textContent=sTxt;sb.appendChild(w);segs.push(mkSeg(wt,wr,sTxt,function(){sb.textContent=sTxt}));
  lastSig=sig();
  t.classList.add("tw-on");sb.classList.add("tw-on");
- caret=sp("tw-caret");hp.appendChild(caret);
- var si=0,k=0,tl=aTxt.length+hTxt.length,done=0;
- place(segs[0]);
- function step(){
+  var si=0,k=0,tl=aTxt.length+hTxt.length,done=0;
+  function step(){
   var g=segs[si];
   if(!g){return}
   k++;g.typed.textContent=g.text.slice(0,k);g.rest.textContent=g.text.slice(k);done++;
-  place(g);
-  var delay=(done<tl?95:48);
-  if(k>=g.text.length){si++;k=0;if(si>=segs.length){fin=setTimeout(function(){if(caret){caret.style.transition="opacity .6s";caret.style.opacity="0";fin2=setTimeout(function(){stop()},700)}},1800);return}
-   if(si===segs.length-1)delay=420;place(segs[si])}
+    var delay=(done<tl?170:95);
+  if(k>=g.text.length){si++;k=0;if(si>=segs.length){timer=setTimeout(finalize,300);return}
+   if(si===segs.length-1)delay=800}
   timer=setTimeout(step,delay);
  }
- timer=setTimeout(step,650);
+ timer=setTimeout(step,900);
 }
 function schedule(){setTimeout(setup,90)}
 function onMut(){if(sig()===lastSig)return;if(document.documentElement.lang!==lastLang&&lastLang!==null){t.classList.remove("tw-on");sb.classList.remove("tw-on")}schedule()}
 new MutationObserver(onMut).observe(t,{childList:true,characterData:true,subtree:true});
 new MutationObserver(onMut).observe(sb,{childList:true,characterData:true,subtree:true});
 schedule();
-setTimeout(function(){t.classList.add("tw-on");sb.classList.add("tw-on")},6000);
+setTimeout(function(){t.classList.add("tw-on");sb.classList.add("tw-on")},12000);
 })();</script>
 </body>
 </html>
