@@ -23,7 +23,15 @@ window.SS={get:function(k){try{var v=localStorage.getItem("sidi."+k);if(v===null
 <meta property="og:title" content="SIDI IFNI Outdoor — معدات الصيد · Matériel de pêche">
 <meta property="og:description" content="متجر معدات الصيد والسبينينغ في سيدي إفني — الطلب عبر واتساب. | Votre sélection outdoor à Sidi Ifni.">
 
-<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="preload" href="cairo-400.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="cairo-800.woff" as="font" type="font/woff" crossorigin>
+<style id="local-fonts">
+@font-face{font-family:"Cairo";font-style:normal;font-weight:400;font-display:swap;src:url(cairo-400.woff) format("woff")}
+@font-face{font-family:"Cairo";font-style:normal;font-weight:600;font-display:swap;src:url(cairo-600.woff) format("woff")}
+@font-face{font-family:"Cairo";font-style:normal;font-weight:800;font-display:swap;src:url(cairo-800.woff) format("woff")}
+@font-face{font-family:"Playfair Display";font-style:normal;font-weight:600;font-display:swap;src:url(playfair-600.woff) format("woff")}
+@font-face{font-family:"Playfair Display";font-style:normal;font-weight:800;font-display:swap;src:url(playfair-800.woff) format("woff")}
+</style>
 <style>
 :root{--bg:#faf6ef;--card:#fff;--tx:#0e2036;--mut:#64748b;--pri:#0b4a8f;--navy:#082a52;--acc:#f7941d;--bd:#eadfcc;--sh:0 10px 30px rgba(8,42,82,.10);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1424;--card:#12233a;--tx:#eef3fa;--mut:#9fb0c6;--pri:#5aa2ee;--bd:#22375a;--sh:0 10px 30px rgba(0,0,0,.4)}}
