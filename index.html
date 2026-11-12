@@ -1804,12 +1804,12 @@ function setup(){
   var g=segs[si];
   if(!g){return}
   k++;g.typed.textContent=g.text.slice(0,k);g.rest.textContent=g.text.slice(k);done++;
-    var delay=(done<tl?110:55);
+    var delay=(done<tl?85:40);
   if(k>=g.text.length){si++;k=0;if(si>=segs.length){timer=setTimeout(finalize,200);return}
-   if(si===segs.length-1)delay=400}
+   if(si===segs.length-1)delay=300}
   timer=setTimeout(step,delay);
  }
- timer=setTimeout(step,400);
+ timer=setTimeout(step,300);
 }
 function schedule(){setTimeout(setup,90)}
 var restarts=0;function onMut(){if(segs.length&&restarts<4){var L=segs[segs.length-1];if(!sb.contains(L.typed)){restarts++;clearTimeout(timer);segs=[];lastSig="";lastLang=null;t.classList.remove("tw-on");sb.classList.remove("tw-on");schedule();return}}if(sig()===lastSig)return;if(document.documentElement.lang!==lastLang&&lastLang!==null){t.classList.remove("tw-on");sb.classList.remove("tw-on")}schedule()}
