@@ -17,6 +17,9 @@ body{font-family:system-ui,Arial,sans-serif;max-width:680px;margin:0 auto;paddin
 h1{font-size:20px;margin:0 0 2px}
 .d{color:#64748b;font-size:14px;margin-bottom:14px}
 .cu{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.cu .ph{grid-column:1/-1}
+.cu .ph b{direction:ltr;unicode-bidi:plaintext;display:block;text-align:start}
+.cu .ph a{color:inherit;text-decoration:none}
 .cu div{border:1px solid #eadfcc;border-radius:12px;padding:10px 12px;background:#faf6ef}
 .cu small{display:block;color:#64748b;font-size:12px;margin-bottom:2px}
 .cu b{font-size:16px;word-break:break-word}
@@ -36,7 +39,7 @@ button{width:100%;padding:14px;border:0;border-radius:12px;background:#f7941d;co
 <div class="bar"></div>
 <h1 id="h"></h1>
 <div class="d" id="d"></div>
-<div class="cu" id="cu" hidden><div><small id="cl"></small><b id="cn"></b></div><div><small id="ccl"></small><b id="cc"></b></div></div>
+<div class="cu" id="cu" hidden><div><small id="cl"></small><b id="cn"></b></div><div><small id="ccl"></small><b id="cc"></b></div><div class="ph"><small id="pl"></small><b><a id="pv"></a></b></div></div>
 <div id="list"></div>
 <div class="tot"><span id="tl"></span><span id="tv"></span></div>
 <p class="ft" id="ft"></p>
@@ -44,11 +47,11 @@ button{width:100%;padding:14px;border:0;border-radius:12px;background:#f7941d;co
 <script>
 (function(){
 var S={
- ar:{h:"طلبية جديدة",t:"المجموع",b:"حفظ كـ PDF",e:"الرابط غير صالح",c:"الزبون",y:"المدينة",s:"معدات الصيد · سيدي إفني، المغرب",f:"شكراً لثقتكم"},
- fr:{h:"Nouvelle commande",t:"Total",b:"Enregistrer en PDF",e:"Lien invalide",c:"Client",y:"Ville",s:"Matériel de pêche · Sidi Ifni, Maroc",f:"Merci pour votre confiance"},
- en:{h:"New order",t:"Total",b:"Save as PDF",e:"Invalid link",c:"Customer",y:"City",s:"Fishing gear · Sidi Ifni, Morocco",f:"Thank you for your order"},
- de:{h:"Neue Bestellung",t:"Summe",b:"Als PDF speichern",e:"Ungültiger Link",c:"Kunde",y:"Stadt",s:"Angelzubehör · Sidi Ifni, Marokko",f:"Vielen Dank für Ihre Bestellung"},
- es:{h:"Nuevo pedido",t:"Total",b:"Guardar como PDF",e:"Enlace no válido",c:"Cliente",y:"Ciudad",s:"Material de pesca · Sidi Ifni, Marruecos",f:"Gracias por su pedido"}
+ ar:{h:"طلبية جديدة",t:"المجموع",b:"حفظ كـ PDF",e:"الرابط غير صالح",c:"الزبون",p:"الهاتف",y:"المدينة",s:"معدات الصيد · سيدي إفني، المغرب",f:"شكراً لثقتكم"},
+ fr:{h:"Nouvelle commande",t:"Total",b:"Enregistrer en PDF",e:"Lien invalide",c:"Client",p:"Téléphone",y:"Ville",s:"Matériel de pêche · Sidi Ifni, Maroc",f:"Merci pour votre confiance"},
+ en:{h:"New order",t:"Total",b:"Save as PDF",e:"Invalid link",c:"Customer",p:"Phone",y:"City",s:"Fishing gear · Sidi Ifni, Morocco",f:"Thank you for your order"},
+ de:{h:"Neue Bestellung",t:"Summe",b:"Als PDF speichern",e:"Ungültiger Link",c:"Kunde",p:"Telefon",y:"Stadt",s:"Angelzubehör · Sidi Ifni, Marokko",f:"Vielen Dank für Ihre Bestellung"},
+ es:{h:"Nuevo pedido",t:"Total",b:"Guardar como PDF",e:"Enlace no válido",c:"Cliente",p:"Teléfono",y:"Ciudad",s:"Material de pesca · Sidi Ifni, Marruecos",f:"Gracias por su pedido"}
 };
 var q=new URLSearchParams(location.search);
 var l=q.get("l");var s=S[l]||S.ar;
@@ -65,9 +68,10 @@ function ub(z){z=z.replace(/-/g,"+").replace(/_/g,"/");var b=atob(z),u=new Uint8
 function show(o){
  var list=$("list");
  if(!o){list.textContent=s.e;return}
- var cn=q.get("n")||o.n,cc=q.get("c")||o.c;
- if(cn||cc){$("cu").hidden=false;$("cl").textContent=s.c;$("ccl").textContent=s.y;
-  $("cn").textContent=String(cn||"—").slice(0,60);$("cc").textContent=String(cc||"—").slice(0,40)}
+ var cn=q.get("n")||o.n,cc=q.get("c")||o.c,cp=String(q.get("p")||o.p||"").replace(/[^\d+ ]/g,"").slice(0,20);
+ if(cn||cc||cp){$("cu").hidden=false;$("pl").textContent=s.p;$("cl").textContent=s.c;$("ccl").textContent=s.y;
+  $("cn").textContent=String(cn||"—").slice(0,60);$("cc").textContent=String(cc||"—").slice(0,40);
+  var pv=$("pv");pv.textContent=cp||"—";if(cp)pv.href="tel:"+cp.replace(/\s/g,"")}
  $("tv").textContent=String(o.t||"");
  o.i.slice(0,100).forEach(function(x){
   var r=document.createElement("div");r.className="it";

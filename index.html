@@ -699,6 +699,7 @@ footer .cp{padding-bottom:88px;line-height:1.7}
 </style><style id="cust-fields">
 #dr .cf{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 10px}
 #dr .cf input{width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit;font-size:15px}
+#dr .cf #cPhone{grid-column:1/-1;direction:ltr;text-align:start}
 #dr .cf input:focus{outline:2px solid var(--acc);outline-offset:0}
 #dr .cerr{color:#e11d48;font-size:14px;font-weight:700;margin:-2px 0 10px}
 #dr .cf input.er{border-color:#e11d48;outline:2px solid #e11d48}
@@ -880,7 +881,7 @@ footer .cp{padding-bottom:88px;line-height:1.7}
 <aside id="dr"><div class="dh"><span data-t="cartT"></span><button id="x" aria-label="Close">×</button></div>
 <div id="items"></div>
 <div class="tot"><span data-t="total"></span><span id="tt"></span></div>
-<div class="cf"><input id="cName" type="text" maxlength="60" autocomplete="name" data-ph="cName"><input id="cCity" type="text" maxlength="40" autocomplete="address-level2" data-ph="cCity"></div>
+<div class="cf"><input id="cName" type="text" maxlength="60" autocomplete="name" data-ph="cName"><input id="cCity" type="text" maxlength="40" autocomplete="address-level2" data-ph="cCity"><input id="cPhone" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" dir="ltr" data-ph="cPhone"></div>
 <div id="cErr" class="cerr" hidden></div>
 <button class="btn wa" id="send" style="justify-content:center;margin:0" data-t="send"></button>
 <div class="dnav"><button class="dn" id="dcont" data-t="cont"></button><button class="dn" id="dhome" data-t="home"></button></div></aside>
@@ -967,7 +968,7 @@ function applyCombo(){const p=P.find(x=>x[0]===19),c=(SHOP.artikel||{}).combo;if
 {const _aS=applyShop;applyShop=function(){_aS();applyCombo()}}
 applyShop();
 const prc=p=>p.old?`<s class="was">${fm(p.old)}</s> ${fm(p[3])}`:fm(p[3]);
-Object.assign(T.ar,{cName:"الاسم الكامل",cCity:"المدينة",cNeed:"المرجو إدخال الاسم والمدينة",cBad:"هذه المدينة غير موجودة في المغرب، المرجو التأكد من الاسم",cLbl:"الزبون",cCityL:"المدينة"});Object.assign(T.fr,{cName:"Nom complet",cCity:"Ville",cNeed:"Veuillez saisir votre nom et votre ville",cBad:"Cette ville n'existe pas au Maroc. Veuillez vérifier l'orthographe.",cLbl:"Client",cCityL:"Ville"});
+Object.assign(T.ar,{cName:"الاسم الكامل",cCity:"المدينة",cNeed:"المرجو إدخال الاسم والمدينة ورقم الهاتف",cPhone:"رقم الهاتف (مثال: 0612345678)",cPhoneL:"الهاتف",cBadP:"رقم الهاتف غير صالح، مثال: 0612345678",cBad:"هذه المدينة غير موجودة في المغرب، المرجو التأكد من الاسم",cLbl:"الزبون",cCityL:"المدينة"});Object.assign(T.fr,{cName:"Nom complet",cCity:"Ville",cNeed:"Veuillez saisir votre nom, votre ville et votre téléphone",cPhone:"Téléphone (ex : 0612345678)",cPhoneL:"Téléphone",cBadP:"Numéro de téléphone invalide, ex : 0612345678",cBad:"Cette ville n'existe pas au Maroc. Veuillez vérifier l'orthographe.",cLbl:"Client",cCityL:"Ville"});
 Object.assign(T.ar,{wish:"🔔 أريد هذا المنتج",wished:"✓ تم إرسال طلبك",wnote:"سيتواصل معك البائع فور توفره من جديد.",cu:n=>n+" مهتم",wm:"مرحباً، أريد هذا المنتج: {n}. المرجو التواصل معي عند توفره من جديد.",so:"نفد المخزون",cont:"← متابعة التسوق",home:"🏠 الصفحة الرئيسية"});Object.assign(T.fr,{wish:"🔔 Je veux cet article",wished:"✓ Demande envoyée",wnote:"Le vendeur vous contactera dès qu’il sera de nouveau disponible.",cu:n=>n+(n===1?" intéressé":" intéressés"),wm:"Bonjour, je souhaite cet article : {n}. Merci de me contacter dès qu’il est de nouveau disponible.",so:"Épuisé",cont:"← Continuer mes achats",home:"🏠 Accueil"});
 const IM={shirt:"shirt.webp",cap:"cap.webp",mask:"mask.webp"};
 IM.shirt_white=IM.shirt;IM.glasses="glasses.webp";IM.glasses_blue=IM.glasses;IM.glasses_black="glasses_black.webp";IM.glasses_gray="glasses_gray.webp";IM.glasses_white="glasses_white.webp";IM.shirt_black="shirt_black.webp";IM.shirt_blue="shirt_blue.webp";
@@ -1164,8 +1165,8 @@ $("cb").onclick=()=>open_(true);
 let lastA=null;
 const goTo=id=>{open_(false);closeDet();setTimeout(()=>{const e=$(id);if(e)e.scrollIntoView({behavior:"smooth",block:"start"})},320)};
 $("dcont").onclick=()=>{open_(false);closeDet();setTimeout(()=>{const b=document.querySelector(`#gr .add[data-a="${lastA}"]`),a=b&&b.closest(".p"),e=a?(a.querySelector(".pi")||a):$("shop");if(e)e.scrollIntoView({behavior:"smooth",block:"center"})},320)};$("dhome").onclick=()=>goTo("top");$("x").onclick=$("ov").onclick=()=>open_(false);
-try{const _c=JSON.parse(SS.get("cust")||"null");if(_c){$("cName").value=String(_c.n||"").slice(0,60);$("cCity").value=String(_c.c||"").slice(0,40)}}catch(e){}
-$("cName").oninput=$("cCity").oninput=e=>{e.target.classList.remove("er");$("cErr").hidden=true};
+try{const _c=JSON.parse(SS.get("cust")||"null");if(_c){$("cName").value=String(_c.n||"").slice(0,60);$("cCity").value=String(_c.c||"").slice(0,40);$("cPhone").value=String(_c.p||"").slice(0,20)}}catch(e){}
+$("cName").oninput=$("cCity").oninput=$("cPhone").oninput=e=>{e.target.classList.remove("er");$("cErr").hidden=true};
 var ZK="",ZV="";
 function orderObj(){var tot=0;var i=Object.keys(cart).filter(function(k){return cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k)}).map(function(k){var p=ph(k);tot+=p[3]*cart[k];return [nm(p)+(vl(k)?" ["+vl(k)+"]":""),cart[k],fm(p[3]*cart[k]),imgOf(p,String(k).split("|")[2])||""]});return {t:fm(tot),i:i}}
 function b64u(u){var s="";for(var j=0;j<u.length;j++)s+=String.fromCharCode(u[j]);return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
@@ -1176,20 +1177,22 @@ const MC="Casablanca/الدار البيضاء/Dar el Beida/Casa,Rabat/الرب�
 const cNorm=s=>{s=String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f\u064B-\u0652\u0640]/g,"").replace(/[أإآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[^a-z0-9\u0600-\u06FF]/g,"");return s.replace(/^(ال|el|al)(?=.{3,})/,"")};
 const MCL=[...new Set(MC.split(",").flatMap(x=>x.split("/")).map(cNorm).filter(Boolean))],MCS=new Set(MCL);
 const ed1=(a,b)=>{if(a===b)return true;if(Math.abs(a.length-b.length)>1)return false;let i=0;while(i<a.length&&i<b.length&&a[i]===b[i])i++;if(a.length===b.length)return a.slice(i+1)===b.slice(i+1);return a.length>b.length?a.slice(i+1)===b.slice(i):b.slice(i+1)===a.slice(i)};
+const normPhone=v=>{const d=String(v).replace(/[\s.\-()]/g,"");const m=d.match(/^(?:\+212|00212|0)([5-7]\d{8})$/);return m?"0"+m[1]:""};
 const isCity=v=>{const n=cNorm(v);if(n.length<2)return false;if(MCS.has(n))return true;return n.length>=6&&MCL.some(m=>m.length>=6&&ed1(m,n))};
 $("send").onclick=()=>{
  let tot=0;const lines=Object.keys(cart).filter(k=>cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k)).map(k=>{const p=ph(k);tot+=p[3]*cart[k];return `• ${nm(p)}${vl(k)?" ["+vl(k)+"]":""}${sp(p)?" ("+sp(p)+")":""} × ${cart[k]} = ${fm(p[3]*cart[k])}`});
  if(!lines.length)return;
- const cN=$("cName"),cC=$("cCity"),cn=cN.value.trim(),cc=cC.value.trim();
- cN.classList.toggle("er",!cn);cC.classList.toggle("er",!cc);
- if(!cn||!cc){(cn?cC:cN).focus();$("cErr").textContent=T[L].cNeed;$("cErr").hidden=false;return}
+ const cN=$("cName"),cC=$("cCity"),cP=$("cPhone"),cn=cN.value.trim(),cc=cC.value.trim(),cpv=cP.value.trim();
+ cN.classList.toggle("er",!cn);cC.classList.toggle("er",!cc);cP.classList.toggle("er",!cpv);
+ if(!cn||!cc||!cpv){(!cn?cN:!cc?cC:cP).focus();$("cErr").textContent=T[L].cNeed;$("cErr").hidden=false;return}
  if(!isCity(cc)){cC.classList.add("er");cC.focus();$("cErr").textContent=T[L].cBad;$("cErr").hidden=false;return}
- try{SS.set("cust",JSON.stringify({n:cn,c:cc}))}catch(e){}
+ const pn=normPhone(cpv);if(!pn){cP.classList.add("er");cP.focus();$("cErr").textContent=T[L].cBadP;$("cErr").hidden=false;return}
+ try{SS.set("cust",JSON.stringify({n:cn,c:cc,p:pn}))}catch(e){}
  const ORDER_PAGE="https://maerchenkonto-ctrl.github.io/sidi-ifni/order.html";
  const oi=Object.keys(cart).filter(k=>cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k)).map(k=>{const p=ph(k);return {n:nm(p)+(vl(k)?" ["+vl(k)+"]":""),q:cart[k],p:fm(p[3]*cart[k]),i:imgOf(p,String(k).split("|")[2])||""}});
- const olink=ORDER_PAGE+"?l="+L+"&o="+encodeURIComponent(JSON.stringify({t:fm(tot),n:cn,c:cc,i:oi}));
- const cur=JSON.stringify(orderObj()),olink2=(ZV&&ZK===cur)?ORDER_PAGE+"?l="+L+"&z="+ZV+"&n="+encodeURIComponent(cn)+"&c="+encodeURIComponent(cc):olink;
- window.open(wa(T[L].hi+"\n"+T[L].cLbl+": "+cn+"\n"+T[L].cCityL+": "+cc+"\n\n"+lines.join("\n")+"\n\n"+T[L].total+": "+fm(tot)+"\n\n"+olink2),"_blank","noopener,noreferrer");
+ const olink=ORDER_PAGE+"?l="+L+"&o="+encodeURIComponent(JSON.stringify({t:fm(tot),n:cn,c:cc,p:pn,i:oi}));
+ const cur=JSON.stringify(orderObj()),olink2=(ZV&&ZK===cur)?ORDER_PAGE+"?l="+L+"&z="+ZV+"&n="+encodeURIComponent(cn)+"&c="+encodeURIComponent(cc)+"&p="+encodeURIComponent(pn):olink;
+ window.open(wa(T[L].hi+"\n"+T[L].cLbl+": "+cn+"\n"+T[L].cCityL+": "+cc+"\n"+T[L].cPhoneL+": "+pn+"\n\n"+lines.join("\n")+"\n\n"+T[L].total+": "+fm(tot)+"\n\n"+olink2),"_blank","noopener,noreferrer");
 };
 try{L=SS.get("lang")||(/^fr/i.test(navigator.language||"")?"fr":"ar")}catch(e){}
 if(!own(T,L))L="ar";$("lang").value=L;
