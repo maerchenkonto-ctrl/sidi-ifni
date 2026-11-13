@@ -60,20 +60,27 @@ $("sub").textContent=s.s;$("ft").textContent=s.f;
 $("pb").onclick=function(){window.print()};
 $("d").textContent=new Date().toLocaleString(S[l]?l:"ar");
 var lg=$("lg");lg.onload=function(){lg.hidden=false};lg.src="icon-192.png";
-var o;try{o=JSON.parse(q.get("o"))}catch(e){}
-var list=$("list");
-if(!o||!Array.isArray(o.i)){list.textContent=s.e;return}
-if(o.n||o.c){$("cu").hidden=false;$("cl").textContent=s.c;$("ccl").textContent=s.y;
- $("cn").textContent=String(o.n||"—").slice(0,60);$("cc").textContent=String(o.c||"—").slice(0,40)}
-$("tv").textContent=String(o.t||"");
-o.i.slice(0,100).forEach(function(x){
- var r=document.createElement("div");r.className="it";
- if(/^[\w.\-]+\.(webp|jpg|jpeg|png)$/i.test(x.i||"")){var im=document.createElement("img");im.src=x.i;im.alt="";r.appendChild(im)}
- var n=document.createElement("div");n.className="n";n.textContent=String(x.n||"");
- var qq=document.createElement("div");qq.className="q";qq.textContent="× "+String(x.q||"");n.appendChild(qq);
- var p=document.createElement("div");p.className="p";p.textContent=String(x.p||"");
- r.appendChild(n);r.appendChild(p);list.appendChild(r);
-});
+function norm(o){if(!o||!Array.isArray(o.i))return null;o.i=o.i.map(function(x){return Array.isArray(x)?{n:x[0],q:x[1],p:x[2],i:x[3]}:x});return o}
+function ub(z){z=z.replace(/-/g,"+").replace(/_/g,"/");var b=atob(z),u=new Uint8Array(b.length);for(var k=0;k<b.length;k++)u[k]=b.charCodeAt(k);return new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).text()}
+function show(o){
+ var list=$("list");
+ if(!o){list.textContent=s.e;return}
+ var cn=q.get("n")||o.n,cc=q.get("c")||o.c;
+ if(cn||cc){$("cu").hidden=false;$("cl").textContent=s.c;$("ccl").textContent=s.y;
+  $("cn").textContent=String(cn||"—").slice(0,60);$("cc").textContent=String(cc||"—").slice(0,40)}
+ $("tv").textContent=String(o.t||"");
+ o.i.slice(0,100).forEach(function(x){
+  var r=document.createElement("div");r.className="it";
+  if(/^[\w.\-]+\.(webp|jpg|jpeg|png)$/i.test(x.i||"")){var im=document.createElement("img");im.src=x.i;im.alt="";r.appendChild(im)}
+  var n=document.createElement("div");n.className="n";n.textContent=String(x.n||"");
+  var qq=document.createElement("div");qq.className="q";qq.textContent="× "+String(x.q||"");n.appendChild(qq);
+  var p=document.createElement("div");p.className="p";p.textContent=String(x.p||"");
+  r.appendChild(n);r.appendChild(p);list.appendChild(r);
+ });
+}
+var z=q.get("z");
+if(z){try{ub(z).then(function(t){show(norm(JSON.parse(t)))}).catch(function(){show(null)})}catch(e){show(null)}}
+else{var o;try{o=JSON.parse(q.get("o"))}catch(e){}show(norm(o))}
 })();
 </script>
 </body>

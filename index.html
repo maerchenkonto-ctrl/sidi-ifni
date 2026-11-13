@@ -1143,7 +1143,7 @@ function drawer(){
  const ids=Object.keys(cart).filter(k=>cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k));let tot=0,n=0;
  $("items").innerHTML=ids.length?ids.map(k=>{const p=ph(k);tot+=p[3]*cart[k];n+=cart[k];
   return `<div class="it"><span class="th">${p[5]?`<img src="${imgOf(p,String(k).split("|")[2])}" alt="">`:p[2]}</span><div class="n"><strong>${nm(p)}</strong>${vl(k)?`<small class="vv">${esc(vl(k))}</small>`:""}${sp(p)?`<small>${sp(p)}</small>`:""}<small class="pp">${fm(p[3])}</small></div><div class="q"><button data-m="${esc(k)}">−</button><b>${cart[k]}</b><button data-p="${esc(k)}">+</button></div></div>`}).join(""):`<div class="em">${T[L].empty}</div>`;
- $("tt").textContent=fm(tot);$("cn").textContent=n;$("send").disabled=!n;$("send").style.opacity=n?1:.5;
+ $("tt").textContent=fm(tot);$("cn").textContent=n;$("send").disabled=!n;$("send").style.opacity=n?1:.5;prepZ();
 }
 document.addEventListener("click",e=>{
  const dz=e.target.closest("[data-d]");if(dz){openDet(+dz.dataset.d);return}
@@ -1166,6 +1166,10 @@ const goTo=id=>{open_(false);closeDet();setTimeout(()=>{const e=$(id);if(e)e.scr
 $("dcont").onclick=()=>{open_(false);closeDet();setTimeout(()=>{const b=document.querySelector(`#gr .add[data-a="${lastA}"]`),a=b&&b.closest(".p"),e=a?(a.querySelector(".pi")||a):$("shop");if(e)e.scrollIntoView({behavior:"smooth",block:"center"})},320)};$("dhome").onclick=()=>goTo("top");$("x").onclick=$("ov").onclick=()=>open_(false);
 try{const _c=JSON.parse(SS.get("cust")||"null");if(_c){$("cName").value=String(_c.n||"").slice(0,60);$("cCity").value=String(_c.c||"").slice(0,40)}}catch(e){}
 $("cName").oninput=$("cCity").oninput=e=>{e.target.classList.remove("er");$("cErr").hidden=true};
+var ZK="",ZV="";
+function orderObj(){var tot=0;var i=Object.keys(cart).filter(function(k){return cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k)}).map(function(k){var p=ph(k);tot+=p[3]*cart[k];return [nm(p)+(vl(k)?" ["+vl(k)+"]":""),cart[k],fm(p[3]*cart[k]),imgOf(p,String(k).split("|")[2])||""]});return {t:fm(tot),i:i}}
+function b64u(u){var s="";for(var j=0;j<u.length;j++)s+=String.fromCharCode(u[j]);return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+async function prepZ(){try{if(typeof CompressionStream==="undefined")return;var k=JSON.stringify(orderObj());if(k===ZK)return;var cs=new CompressionStream("deflate-raw"),w=cs.writable.getWriter();w.write(new TextEncoder().encode(k));w.close();var buf=new Uint8Array(await new Response(cs.readable).arrayBuffer());ZK=k;ZV=b64u(buf)}catch(e){ZK="";ZV=""}}
 $("send").onclick=()=>{
  let tot=0;const lines=Object.keys(cart).filter(k=>cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k)).map(k=>{const p=ph(k);tot+=p[3]*cart[k];return `• ${nm(p)}${vl(k)?" ["+vl(k)+"]":""}${sp(p)?" ("+sp(p)+")":""} × ${cart[k]} = ${fm(p[3]*cart[k])}`});
  if(!lines.length)return;
@@ -1176,7 +1180,8 @@ $("send").onclick=()=>{
  const ORDER_PAGE="https://maerchenkonto-ctrl.github.io/sidi-ifni/order.html";
  const oi=Object.keys(cart).filter(k=>cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k)).map(k=>{const p=ph(k);return {n:nm(p)+(vl(k)?" ["+vl(k)+"]":""),q:cart[k],p:fm(p[3]*cart[k]),i:imgOf(p,String(k).split("|")[2])||""}});
  const olink=ORDER_PAGE+"?l="+L+"&o="+encodeURIComponent(JSON.stringify({t:fm(tot),n:cn,c:cc,i:oi}));
- window.open(wa(T[L].hi+"\n"+T[L].cLbl+": "+cn+"\n"+T[L].cCityL+": "+cc+"\n\n"+lines.join("\n")+"\n\n"+T[L].total+": "+fm(tot)+"\n\n"+olink),"_blank","noopener,noreferrer");
+ const cur=JSON.stringify(orderObj()),olink2=(ZV&&ZK===cur)?ORDER_PAGE+"?l="+L+"&z="+ZV+"&n="+encodeURIComponent(cn)+"&c="+encodeURIComponent(cc):olink;
+ window.open(wa(T[L].hi+"\n"+T[L].cLbl+": "+cn+"\n"+T[L].cCityL+": "+cc+"\n\n"+lines.join("\n")+"\n\n"+T[L].total+": "+fm(tot)+"\n\n"+olink2),"_blank","noopener,noreferrer");
 };
 try{L=SS.get("lang")||(/^fr/i.test(navigator.language||"")?"fr":"ar")}catch(e){}
 if(!own(T,L))L="ar";$("lang").value=L;
