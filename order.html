@@ -6,47 +6,66 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:">
 <title>Sidi Ifni Outdoor</title>
 <style>
-body{font-family:system-ui,Arial,sans-serif;max-width:640px;margin:0 auto;padding:16px;color:#0e2036;background:#fff}
-h1{font-size:20px;margin:0 0 4px}
-.d{color:#64748b;font-size:14px;margin-bottom:12px}
+*{box-sizing:border-box}
+body{font-family:system-ui,Arial,sans-serif;max-width:680px;margin:0 auto;padding:16px;color:#0e2036;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.hd{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;background:#082a52;color:#fff}
+.hd img{width:64px;height:64px;border-radius:50%;background:#fff;object-fit:cover;flex:none;border:2px solid #f7941d}
+.hd .b{flex:1;min-width:0}
+.hd .b strong{display:block;font-size:20px;letter-spacing:.5px}
+.hd .b span{font-size:13px;opacity:.8}
+.bar{height:4px;border-radius:2px;background:#f7941d;margin:10px 0 14px}
+h1{font-size:20px;margin:0 0 2px}
+.d{color:#64748b;font-size:14px;margin-bottom:14px}
+.cu{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.cu div{border:1px solid #eadfcc;border-radius:12px;padding:10px 12px;background:#faf6ef}
+.cu small{display:block;color:#64748b;font-size:12px;margin-bottom:2px}
+.cu b{font-size:16px;word-break:break-word}
 .it{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eadfcc;break-inside:avoid}
 .it img{width:80px;height:80px;object-fit:contain;border:1px solid #eadfcc;border-radius:10px;background:#fff;flex:none}
 .it .n{flex:1;font-weight:700}
 .it .q{color:#64748b;font-weight:400;font-size:14px}
 .it .p{font-weight:800;white-space:nowrap}
-.tot{display:flex;justify-content:space-between;font-size:18px;font-weight:800;padding:14px 0}
+.tot{display:flex;justify-content:space-between;font-size:18px;font-weight:800;padding:14px 16px;margin:14px 0;border-radius:12px;background:#fff3e0;border:1px solid #f7941d;break-inside:avoid}
+.ft{text-align:center;color:#64748b;font-size:12px;margin:0 0 14px}
 button{width:100%;padding:14px;border:0;border-radius:12px;background:#f7941d;color:#1b1200;font:inherit;font-weight:800;font-size:16px;cursor:pointer}
-@media print{button{display:none}}
+@media print{button{display:none}body{padding:0}}
 </style>
 </head>
 <body>
+<div class="hd"><img id="lg" alt="" hidden><div class="b"><strong>SIDI IFNI OUTDOOR</strong><span id="sub"></span></div></div>
+<div class="bar"></div>
 <h1 id="h"></h1>
 <div class="d" id="d"></div>
+<div class="cu" id="cu" hidden><div><small id="cl"></small><b id="cn"></b></div><div><small id="ccl"></small><b id="cc"></b></div></div>
 <div id="list"></div>
 <div class="tot"><span id="tl"></span><span id="tv"></span></div>
+<p class="ft" id="ft"></p>
 <button id="pb" type="button"></button>
 <script>
 (function(){
 var S={
- ar:{h:"طلبية جديدة",t:"المجموع",b:"حفظ كـ PDF",e:"الرابط غير صالح"},
- fr:{h:"Nouvelle commande",t:"Total",b:"Enregistrer en PDF",e:"Lien invalide"},
- en:{h:"New order",t:"Total",b:"Save as PDF",e:"Invalid link"},
- de:{h:"Neue Bestellung",t:"Summe",b:"Als PDF speichern",e:"Ungültiger Link"},
- es:{h:"Nuevo pedido",t:"Total",b:"Guardar como PDF",e:"Enlace no válido"}
+ ar:{h:"طلبية جديدة",t:"المجموع",b:"حفظ كـ PDF",e:"الرابط غير صالح",c:"الزبون",y:"المدينة",s:"معدات الصيد · سيدي إفني، المغرب",f:"شكراً لثقتكم"},
+ fr:{h:"Nouvelle commande",t:"Total",b:"Enregistrer en PDF",e:"Lien invalide",c:"Client",y:"Ville",s:"Matériel de pêche · Sidi Ifni, Maroc",f:"Merci pour votre confiance"},
+ en:{h:"New order",t:"Total",b:"Save as PDF",e:"Invalid link",c:"Customer",y:"City",s:"Fishing gear · Sidi Ifni, Morocco",f:"Thank you for your order"},
+ de:{h:"Neue Bestellung",t:"Summe",b:"Als PDF speichern",e:"Ungültiger Link",c:"Kunde",y:"Stadt",s:"Angelzubehör · Sidi Ifni, Marokko",f:"Vielen Dank für Ihre Bestellung"},
+ es:{h:"Nuevo pedido",t:"Total",b:"Guardar como PDF",e:"Enlace no válido",c:"Cliente",y:"Ciudad",s:"Material de pesca · Sidi Ifni, Marruecos",f:"Gracias por su pedido"}
 };
 var q=new URLSearchParams(location.search);
 var l=q.get("l");var s=S[l]||S.ar;
 document.documentElement.lang=S[l]?l:"ar";
 document.documentElement.dir=(S[l]?l:"ar")==="ar"?"rtl":"ltr";
-document.getElementById("h").textContent=s.h;
-document.getElementById("tl").textContent=s.t;
-document.getElementById("pb").textContent=s.b;
-document.getElementById("pb").onclick=function(){window.print()};
-document.getElementById("d").textContent=new Date().toLocaleString(S[l]?l:"ar");
+function $(i){return document.getElementById(i)}
+$("h").textContent=s.h;$("tl").textContent=s.t;$("pb").textContent=s.b;
+$("sub").textContent=s.s;$("ft").textContent=s.f;
+$("pb").onclick=function(){window.print()};
+$("d").textContent=new Date().toLocaleString(S[l]?l:"ar");
+var lg=$("lg");lg.onload=function(){lg.hidden=false};lg.src="icon-192.png";
 var o;try{o=JSON.parse(q.get("o"))}catch(e){}
-var list=document.getElementById("list");
+var list=$("list");
 if(!o||!Array.isArray(o.i)){list.textContent=s.e;return}
-document.getElementById("tv").textContent=String(o.t||"");
+if(o.n||o.c){$("cu").hidden=false;$("cl").textContent=s.c;$("ccl").textContent=s.y;
+ $("cn").textContent=String(o.n||"—").slice(0,60);$("cc").textContent=String(o.c||"—").slice(0,40)}
+$("tv").textContent=String(o.t||"");
 o.i.slice(0,100).forEach(function(x){
  var r=document.createElement("div");r.className="it";
  if(/^[\w.\-]+\.(webp|jpg|jpeg|png)$/i.test(x.i||"")){var im=document.createElement("img");im.src=x.i;im.alt="";r.appendChild(im)}

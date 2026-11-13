@@ -696,7 +696,13 @@ html.panel-open #coastal-sound-toggle{display:none!important}
 .mt button .ppt{position:absolute;inset:0;margin:auto;width:26px;height:26px;border-radius:50%;background:rgba(8,42,82,.88);color:#fff;font-size:12px;display:grid;place-items:center;padding-inline-start:2px}
 .cp a{color:inherit;opacity:.75;text-decoration:underline;text-underline-offset:2px}
 footer .cp{padding-bottom:88px;line-height:1.7}
-</style></head>
+</style><style id="cust-fields">
+#dr .cf{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 10px}
+#dr .cf input{width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit;font-size:15px}
+#dr .cf input:focus{outline:2px solid var(--acc);outline-offset:0}
+#dr .cf input.er{border-color:#e11d48;outline:2px solid #e11d48}
+</style>
+</head>
 <body>
 <nav><div class="w">
 <a class="brand" href="#top"><img src="img_d5158ca0.png" alt="SIDI IFNI Outdoor"><span>SIDI IFNI OUTDOOR</span></a>
@@ -873,6 +879,7 @@ footer .cp{padding-bottom:88px;line-height:1.7}
 <aside id="dr"><div class="dh"><span data-t="cartT"></span><button id="x" aria-label="Close">×</button></div>
 <div id="items"></div>
 <div class="tot"><span data-t="total"></span><span id="tt"></span></div>
+<div class="cf"><input id="cName" type="text" maxlength="60" autocomplete="name" data-ph="cName"><input id="cCity" type="text" maxlength="40" autocomplete="address-level2" data-ph="cCity"></div>
 <button class="btn wa" id="send" style="justify-content:center;margin:0" data-t="send"></button>
 <div class="dnav"><button class="dn" id="dcont" data-t="cont"></button><button class="dn" id="dhome" data-t="home"></button></div></aside>
 
@@ -958,6 +965,7 @@ function applyCombo(){const p=P.find(x=>x[0]===19),c=(SHOP.artikel||{}).combo;if
 {const _aS=applyShop;applyShop=function(){_aS();applyCombo()}}
 applyShop();
 const prc=p=>p.old?`<s class="was">${fm(p.old)}</s> ${fm(p[3])}`:fm(p[3]);
+Object.assign(T.ar,{cName:"الاسم الكامل",cCity:"المدينة",cNeed:"المرجو إدخال الاسم والمدينة",cLbl:"الزبون",cCityL:"المدينة"});Object.assign(T.fr,{cName:"Nom complet",cCity:"Ville",cNeed:"Veuillez saisir votre nom et votre ville",cLbl:"Client",cCityL:"Ville"});
 Object.assign(T.ar,{wish:"🔔 أريد هذا المنتج",wished:"✓ تم إرسال طلبك",wnote:"سيتواصل معك البائع فور توفره من جديد.",cu:n=>n+" مهتم",wm:"مرحباً، أريد هذا المنتج: {n}. المرجو التواصل معي عند توفره من جديد.",so:"نفد المخزون",cont:"← متابعة التسوق",home:"🏠 الصفحة الرئيسية"});Object.assign(T.fr,{wish:"🔔 Je veux cet article",wished:"✓ Demande envoyée",wnote:"Le vendeur vous contactera dès qu’il sera de nouveau disponible.",cu:n=>n+(n===1?" intéressé":" intéressés"),wm:"Bonjour, je souhaite cet article : {n}. Merci de me contacter dès qu’il est de nouveau disponible.",so:"Épuisé",cont:"← Continuer mes achats",home:"🏠 Accueil"});
 const IM={shirt:"shirt.webp",cap:"cap.webp",mask:"mask.webp"};
 IM.shirt_white=IM.shirt;IM.glasses="glasses.webp";IM.glasses_blue=IM.glasses;IM.glasses_black="glasses_black.webp";IM.glasses_gray="glasses_gray.webp";IM.glasses_white="glasses_white.webp";IM.shirt_black="shirt_black.webp";IM.shirt_blue="shirt_blue.webp";
@@ -1127,7 +1135,7 @@ function render(){
  drawCats(d);
  $("gr").innerHTML=P.filter(p=>cat==="all"||p[1]===cat).map(p=>`<article class="p${p.out?" out":""}${p[0]===19?" pcombo":""}"><div class="pi${DET[p[0]]?" zm":""}"${DET[p[0]]?` data-d="${p[0]}"`:""}>${DET[p[0]]?`<span class="dt">🔍 ${DT[L]}</span>`:""}${p.old?`<span class="sale">−${p.pc}%</span>`:""}${p[0]===19?`<span class="gf">🎁 ${d.gift}</span>`:""}${p.out?`<span class="so">${d.so}</span>`:""}${isNew(p)?`<span class="nw" data-l="${L}">${L==="fr"?"NOUVEAU":L==="ar"?"جديد":"NEW"}</span>`:""}${(sel[p[0]]&&sel[p[0]].s)?`<span class="szb"><small>${V[L].sz}</small><b>${sel[p[0]].s}</b></span>`:""}${p[5]?picHtml(p):p[2]}</div><div class="pb"><h3>${nm(p)}</h3>${sp(p)?`<div class="sp">${sp(p)}</div>`:""}<div class="pr">${prc(p)}</div>${VARS[p[0]]?vhtml(p):""}<button class="add" data-a="${p[0]}"${(p.out||selOut(p[0]))?" disabled":""}>${(p.out||selOut(p[0]))?d.so:d.add}</button>${wishHtml(p)}</div></article>`).join("");
  $("w2").href=wa(d.hw);$("w4").href=wa(d.hw);$("w3").href=wa(d.hw);
- drawer();
+ document.querySelectorAll("[data-ph]").forEach(e=>e.placeholder=d[e.dataset.ph]);drawer();
 }
 function drawer(){
  const ids=Object.keys(cart).filter(k=>cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k));let tot=0,n=0;
@@ -1154,13 +1162,19 @@ $("cb").onclick=()=>open_(true);
 let lastA=null;
 const goTo=id=>{open_(false);closeDet();setTimeout(()=>{const e=$(id);if(e)e.scrollIntoView({behavior:"smooth",block:"start"})},320)};
 $("dcont").onclick=()=>{open_(false);closeDet();setTimeout(()=>{const b=document.querySelector(`#gr .add[data-a="${lastA}"]`),a=b&&b.closest(".p"),e=a?(a.querySelector(".pi")||a):$("shop");if(e)e.scrollIntoView({behavior:"smooth",block:"center"})},320)};$("dhome").onclick=()=>goTo("top");$("x").onclick=$("ov").onclick=()=>open_(false);
+try{const _c=JSON.parse(SS.get("cust")||"null");if(_c){$("cName").value=String(_c.n||"").slice(0,60);$("cCity").value=String(_c.c||"").slice(0,40)}}catch(e){}
+$("cName").oninput=$("cCity").oninput=e=>e.target.classList.remove("er");
 $("send").onclick=()=>{
  let tot=0;const lines=Object.keys(cart).filter(k=>cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k)).map(k=>{const p=ph(k);tot+=p[3]*cart[k];return `• ${nm(p)}${vl(k)?" ["+vl(k)+"]":""}${sp(p)?" ("+sp(p)+")":""} × ${cart[k]} = ${fm(p[3]*cart[k])}`});
  if(!lines.length)return;
+ const cN=$("cName"),cC=$("cCity"),cn=cN.value.trim(),cc=cC.value.trim();
+ cN.classList.toggle("er",!cn);cC.classList.toggle("er",!cc);
+ if(!cn||!cc){(cn?cC:cN).focus();alert(T[L].cNeed);return}
+ try{SS.set("cust",JSON.stringify({n:cn,c:cc}))}catch(e){}
  const ORDER_PAGE="https://maerchenkonto-ctrl.github.io/sidi-ifni/order.html";
  const oi=Object.keys(cart).filter(k=>cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k)).map(k=>{const p=ph(k);return {n:nm(p)+(vl(k)?" ["+vl(k)+"]":""),q:cart[k],p:fm(p[3]*cart[k]),i:imgOf(p,String(k).split("|")[2])||""}});
- const olink=ORDER_PAGE+"?l="+L+"&o="+encodeURIComponent(JSON.stringify({t:fm(tot),i:oi}));
- window.open(wa(T[L].hi+"\n"+lines.join("\n")+"\n\n"+T[L].total+": "+fm(tot)+"\n\n"+olink),"_blank","noopener,noreferrer");
+ const olink=ORDER_PAGE+"?l="+L+"&o="+encodeURIComponent(JSON.stringify({t:fm(tot),n:cn,c:cc,i:oi}));
+ window.open(wa(T[L].hi+"\n"+T[L].cLbl+": "+cn+"\n"+T[L].cCityL+": "+cc+"\n\n"+lines.join("\n")+"\n\n"+T[L].total+": "+fm(tot)+"\n\n"+olink),"_blank","noopener,noreferrer");
 };
 try{L=SS.get("lang")||(/^fr/i.test(navigator.language||"")?"fr":"ar")}catch(e){}
 if(!own(T,L))L="ar";$("lang").value=L;
