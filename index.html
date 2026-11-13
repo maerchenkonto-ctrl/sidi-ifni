@@ -704,18 +704,6 @@ footer .cp{padding-bottom:88px;line-height:1.7}
 #dr .cerr{color:#e11d48;font-size:14px;font-weight:700;margin:-2px 0 10px}
 #dr .cf input.er{border-color:#e11d48;outline:2px solid #e11d48}
 </style>
-<style id="rate-css">
-.rt{padding:26px 0}.rt[hidden],#rateFl[hidden]{display:none!important}
-.rt .rtc{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:24px 18px 26px;text-align:center;box-shadow:var(--sh)}
-.rt h2{margin:0 0 6px}
-.rt .rti{list-style:none;margin:18px 0 20px;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.rt .rti li{display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--tx);font-size:13px}
-.rt .rti li span{width:54px;height:54px;border-radius:17px;background:rgba(247,148,29,.14);display:grid;place-items:center;font-size:25px}
-.rt .rti li b{font-weight:800}.rt .rti li i{font-style:normal;color:var(--acc);font-size:11px;letter-spacing:1px;direction:ltr}
-.rt .rtb{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--acc);color:#fff;border-radius:14px;padding:13px 30px;font-weight:800;font-size:16px;text-decoration:none;box-shadow:0 6px 18px rgba(247,148,29,.35)}
-.rt .rtb:hover{filter:brightness(1.06)}.rt .rtb:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
-@media(max-width:360px){.rt .rti li{font-size:12px}.rt .rti li span{width:46px;height:46px;font-size:21px}}
-</style>
 </head>
 <body>
 <nav><div class="w">
@@ -875,9 +863,6 @@ footer .cp{padding-bottom:88px;line-height:1.7}
 <div class="ch cats" id="ch"></div><div class="grid" id="gr"></div>
 </div></section>
 
-<section id="rate" class="rt" aria-labelledby="rateH" hidden><div class="w"><div class="rtc"><h2 id="rateH" data-t="rateT"></h2><p class="sub" data-t="rateS"></p>
-<ul class="rti"><li><span aria-hidden="true">📦</span><b data-t="rate1"></b><i aria-hidden="true">★★★★★</i></li><li><span aria-hidden="true">🛍️</span><b data-t="rate2"></b><i aria-hidden="true">★★★★★</i></li><li><span aria-hidden="true">🚚</span><b data-t="rate3"></b><i aria-hidden="true">★★★★★</i></li><li><span aria-hidden="true">💬</span><b data-t="rate4"></b><i aria-hidden="true">★★★★★</i></li></ul>
-<a class="rtb" id="rateBtn" target="_blank" rel="noopener noreferrer" data-t="rateBtn"></a></div></div></section>
 <section id="contact" class="ct"><div class="w">
 <h2 data-t="ct"></h2><p class="sub" data-t="cs"></p>
 <a class="btn wa" id="w2" target="_blank" rel="noopener">WhatsApp</a>
@@ -889,7 +874,7 @@ footer .cp{padding-bottom:88px;line-height:1.7}
 <details id="lg3"><summary data-t="lgC"></summary><div class="lb" data-lg="3"></div></details>
 <details id="lg4"><summary data-t="lgD"></summary><div class="lb" data-lg="4"></div></details>
 </div></section>
-<footer><div class="w fg"><div class="fb"><b>SIDI IFNI OUTDOOR</b><span>Sidi Ifni, Maroc</span></div><div class="fl"><a href="#shop" data-t="nShop"></a><a href="#contact" data-t="nCt"></a><a href="#rate" id="rateFl" data-t="rateFl" hidden></a><a href="https://www.facebook.com/share/1DrwnDekTL/" target="_blank" rel="noopener">Facebook</a><a href="#lg1" data-lgo="1" data-t="lgA"></a><a href="#lg2" data-lgo="2" data-t="lgB"></a><a href="#lg3" data-lgo="3" data-t="lgC"></a><a href="#lg4" data-lgo="4" data-t="lgD"></a></div></div><div class="w cp">© 2026 SIDI IFNI Outdoor · <a href="https://orangefreesounds.com/seagulls-sound/" target="_blank" rel="noopener">Seagulls sound — Orange Free Sounds (CC BY 4.0)</a></div></footer>
+<footer><div class="w fg"><div class="fb"><b>SIDI IFNI OUTDOOR</b><span>Sidi Ifni, Maroc</span></div><div class="fl"><a href="#shop" data-t="nShop"></a><a href="#contact" data-t="nCt"></a><a href="https://www.facebook.com/share/1DrwnDekTL/" target="_blank" rel="noopener">Facebook</a><a href="#lg1" data-lgo="1" data-t="lgA"></a><a href="#lg2" data-lgo="2" data-t="lgB"></a><a href="#lg3" data-lgo="3" data-t="lgC"></a><a href="#lg4" data-lgo="4" data-t="lgD"></a></div></div><div class="w cp">© 2026 SIDI IFNI Outdoor · <a href="https://orangefreesounds.com/seagulls-sound/" target="_blank" rel="noopener">Seagulls sound — Orange Free Sounds (CC BY 4.0)</a></div></footer>
 
 <a class="fw" id="w3" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
 <div id="ov"></div>
@@ -983,8 +968,6 @@ function applyCombo(){const p=P.find(x=>x[0]===19),c=(SHOP.artikel||{}).combo;if
 {const _aS=applyShop;applyShop=function(){_aS();applyCombo()}}
 applyShop();
 const prc=p=>p.old?`<s class="was">${fm(p.old)}</s> ${fm(p[3])}`:fm(p[3]);
-Object.assign(T.ar,{rateT:"قيّم تجربتك معنا",rateS:"رأيك يهمنا ويساعدنا على التحسين. قيّم في أقل من دقيقة:",rate1:"المنتج",rate2:"الخدمة",rate3:"التوصيل",rate4:"التواصل",rateBtn:"قيّم الآن ⭐",rateFl:"قيّم تجربتك"});
-Object.assign(T.fr,{rateT:"Évaluez votre expérience",rateS:"Votre avis compte et nous aide à nous améliorer. Moins d’une minute :",rate1:"Produit",rate2:"Service",rate3:"Livraison",rate4:"Communication",rateBtn:"Donner mon avis ⭐",rateFl:"Votre avis"});
 Object.assign(T.ar,{cName:"الاسم الكامل",cCity:"المدينة",cNeed:"المرجو إدخال الاسم والمدينة ورقم الهاتف",cPhone:"رقم الهاتف (مثال: 0612345678)",cPhoneL:"الهاتف",cBadP:"رقم الهاتف غير صالح، مثال: 0612345678",cBad:"هذه المدينة غير موجودة في المغرب، المرجو التأكد من الاسم",cLbl:"الزبون",cCityL:"المدينة"});Object.assign(T.fr,{cName:"Nom complet",cCity:"Ville",cNeed:"Veuillez saisir votre nom, votre ville et votre téléphone",cPhone:"Téléphone (ex : 0612345678)",cPhoneL:"Téléphone",cBadP:"Numéro de téléphone invalide, ex : 0612345678",cBad:"Cette ville n'existe pas au Maroc. Veuillez vérifier l'orthographe.",cLbl:"Client",cCityL:"Ville"});
 Object.assign(T.ar,{wish:"🔔 أريد هذا المنتج",wished:"✓ تم إرسال طلبك",wnote:"سيتواصل معك البائع فور توفره من جديد.",cu:n=>n+" مهتم",wm:"مرحباً، أريد هذا المنتج: {n}. المرجو التواصل معي عند توفره من جديد.",so:"نفد المخزون",cont:"← متابعة التسوق",home:"🏠 الصفحة الرئيسية"});Object.assign(T.fr,{wish:"🔔 Je veux cet article",wished:"✓ Demande envoyée",wnote:"Le vendeur vous contactera dès qu’il sera de nouveau disponible.",cu:n=>n+(n===1?" intéressé":" intéressés"),wm:"Bonjour, je souhaite cet article : {n}. Merci de me contacter dès qu’il est de nouveau disponible.",so:"Épuisé",cont:"← Continuer mes achats",home:"🏠 Accueil"});
 const IM={shirt:"shirt.webp",cap:"cap.webp",mask:"mask.webp"};
@@ -1016,9 +999,6 @@ const vl=k=>{const a=String(k).split("|");return [a[1],a[2]&&V[L].c[a[2]]].filte
 const imgOf=(p,c)=>p[0]===15?(IM["h"+c]||IM.h01):p[0]===9?(IM["shirt_"+c]||IM.shirt):p[0]===14?(IM["glasses_"+c]||IM.glasses):p[0]===6?(IM["m"+String(c||"").slice(1)]||IM[c]||IM.bait):IM[p[5]];
 const vhtml=p=>{if(p[0]===15){const o=sel[15],v=VARS[15];return `<div class="vr"><div class="vl">${V[L].sz}</div><div class="vc">${v.sz.map(z=>`<button class="chip ${o.s===z?"on":""}${HD.every(c=>vOut(15,z,c))?" vx":""}" data-vid="15" data-vs="${z}">${z}</button>`).join("")}</div><div class="vl">${V[L].dn}: <span class="cn">${V[L].c[o.c]}</span></div><div class="cg">${HD.map(c=>`<button class="cs ${o.c===c?"on":""}${vOut(15,o.s,c)?" vx":""}" data-vid="15" data-vc="${c}" title="${c}"><img src="${IM["ht"+c]}" alt="${c}"><i>${c}</i></button>`).join("")}</div></div>`}if(p[0]===6){const o=sel[6];return `<div class="vr"><div class="vl">${V[L].co}: <span class="cn">${V[L].c[o.c]}</span></div><div class="cg">${BC.map(c=>`<button class="cs ${o.c==="b"+c?"on":""}${vOut(6,"","b"+c)?" vx":""}" data-vid="6" data-vc="b${c}" title="${c}"><img src="${IM["b"+c]}" alt="${c}"><i>${c}</i></button>`).join("")}</div></div>`};const v=VARS[p[0]],o=sel[p[0]];return `<div class="vr">${v.sz?`<div class="vl">${V[L].sz}</div><div class="vc">${v.sz.map(z=>`<button class="chip ${o.s===z?"on":""}${v.cs.every(c=>vOut(p[0],z,c))?" vx":""}" data-vid="${p[0]}" data-vs="${z}">${z}</button>`).join("")}</div>`:""}<div class="vl">${V[L].co}</div><div class="vc">${v.cs.map(c=>`<button class="chip ${o.c===c?"on":""}${vOut(p[0],o.s,c)?" vx":""}" data-vid="${p[0]}" data-vc="${c}"><i style="background:${SW[c]}"></i>${V[L].c[c]}</button>`).join("")}</div></div>`};
 const LI={fr:2,ar:4};
-/* رابط نموذج Google للتقييم: ضعه هنا بين علامتي الاقتباس، أو في صف RATE بالجدول (عمود name). فارغ = القسم مخفي */
-var RATE_URL="";
-const okRate=u=>typeof u==="string"&&u.length<=400&&/^https:\/\/(forms\.gle\/[A-Za-z0-9_-]{4,}|docs\.google\.com\/forms\/[A-Za-z0-9_\/.\-]+(\?[A-Za-z0-9_=&%.\-]*)?)$/.test(u);
 const own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
 const esc=v=>String(v).replace(/[&<>"'`]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;","`":"&#96;"}[c]));
 const KEYRE=/^\d{1,3}(\|[A-Za-z0-9]{0,6}\|[A-Za-z0-9]{0,8})?$/;
@@ -1241,7 +1221,6 @@ function sheetToCfg(rows){
   const k=String(r[iK]||"").trim();if(!k)return;
   if(k.toUpperCase()==="ALLE"){const n=sNum(r[iR]);cfg.rabattAlle=n==null?0:n;return}
   if(k.toUpperCase()==="WHATSAPP"){const d=String(r[iN]||"").replace(/\D/g,"");if(d.length>=8)cfg.wa=d;return}
-  if(k.toUpperCase()==="RATE"){cfg.rate=String(r[iN]||"").trim();return}
   if(!own(K,k))return;
   const a={};
   const p=sNum(r[iP]);if(p!=null&&p>=0)a.preis=p;
@@ -1255,7 +1234,6 @@ function cleanCfg(c){const o={artikel:{}};if(!c||typeof c!=="object")return o;
  const pct=n=>{n=Number(n);return isFinite(n)?Math.min(90,Math.max(0,n)):0};
  if(typeof c.rabattAlle==="number")o.rabattAlle=pct(c.rabattAlle);
  if(typeof c.wa==="string"){const d=c.wa.replace(/\D/g,"");if(d.length>=8&&d.length<=15)o.wa=d}
- if(typeof c.rate==="string")o.rate=okRate(c.rate)?c.rate:"";
  const A=c.artikel&&typeof c.artikel==="object"?c.artikel:{};
  Object.keys(A).forEach(k=>{if(!own(K,k))return;const a=A[k]&&typeof A[k]==="object"?A[k]:{},r={};
   if(a.preis!=null&&a.preis!==""){const pr=Number(a.preis);if(isFinite(pr)&&pr>=0&&pr<=1e6)r.preis=pr}
@@ -1265,7 +1243,6 @@ function cleanCfg(c){const o={artikel:{}};if(!c||typeof c!=="object")return o;
   if(Array.isArray(a.ausVarianten))r.ausVarianten=a.ausVarianten.filter(x=>typeof x==="string"&&x.length<=24&&!/[<>"'`]/.test(x)).slice(0,60);
   o.artikel[k]=r});return o}
 function applyRemote(cfg){cfg=cleanCfg(cfg);
- if(typeof cfg.rate==="string"){RATE_URL=cfg.rate;if(typeof setRate==="function")setRate()}
  if(typeof cfg.rabattAlle==="number")SHOP.rabattAlle=cfg.rabattAlle;
  if(cfg.wa)WA=cfg.wa;
  for(const k in cfg.artikel){SHOP.artikel[k]=Object.assign(SHOP.artikel[k]||{},cfg.artikel[k])}
@@ -1876,10 +1853,5 @@ new MutationObserver(onMut).observe(sb,{childList:true,characterData:true,subtre
 schedule();
 setTimeout(function(){t.classList.add("tw-on");sb.classList.add("tw-on")},12000);
 })();</script>
-<script>
-function setRate(){var ok=okRate(RATE_URL),sec=document.getElementById("rate"),btn=document.getElementById("rateBtn"),fl=document.getElementById("rateFl");
-if(!sec||!btn)return;if(ok)btn.href=RATE_URL;else btn.removeAttribute("href");sec.hidden=!ok;if(fl){fl.hidden=!ok;if(ok)fl.setAttribute("href","#rate")}}
-setRate();
-</script>
 </body>
 </html>
