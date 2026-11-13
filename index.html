@@ -1157,7 +1157,10 @@ $("dcont").onclick=()=>{open_(false);closeDet();setTimeout(()=>{const b=document
 $("send").onclick=()=>{
  let tot=0;const lines=Object.keys(cart).filter(k=>cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k)).map(k=>{const p=ph(k);tot+=p[3]*cart[k];return `• ${nm(p)}${vl(k)?" ["+vl(k)+"]":""}${sp(p)?" ("+sp(p)+")":""} × ${cart[k]} = ${fm(p[3]*cart[k])}`});
  if(!lines.length)return;
- window.open(wa(T[L].hi+"\n"+lines.join("\n")+"\n\n"+T[L].total+": "+fm(tot)),"_blank","noopener,noreferrer");
+ const ORDER_PAGE="https://maerchenkonto-ctrl.github.io/sidi-ifni/order.html";
+ const oi=Object.keys(cart).filter(k=>cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k)).map(k=>{const p=ph(k);return {n:nm(p)+(vl(k)?" ["+vl(k)+"]":""),q:cart[k],p:fm(p[3]*cart[k]),i:imgOf(p,String(k).split("|")[2])||""}});
+ const olink=ORDER_PAGE+"?l="+L+"&o="+encodeURIComponent(JSON.stringify({t:fm(tot),i:oi}));
+ window.open(wa(T[L].hi+"\n"+lines.join("\n")+"\n\n"+T[L].total+": "+fm(tot)+"\n\n"+olink),"_blank","noopener,noreferrer");
 };
 try{L=SS.get("lang")||(/^fr/i.test(navigator.language||"")?"fr":"ar")}catch(e){}
 if(!own(T,L))L="ar";$("lang").value=L;
