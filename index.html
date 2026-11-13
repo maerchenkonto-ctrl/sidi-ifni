@@ -700,6 +700,7 @@ footer .cp{padding-bottom:88px;line-height:1.7}
 #dr .cf{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 10px}
 #dr .cf input{width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit;font-size:15px}
 #dr .cf input:focus{outline:2px solid var(--acc);outline-offset:0}
+#dr .cerr{color:#e11d48;font-size:14px;font-weight:700;margin:-2px 0 10px}
 #dr .cf input.er{border-color:#e11d48;outline:2px solid #e11d48}
 </style>
 </head>
@@ -880,6 +881,7 @@ footer .cp{padding-bottom:88px;line-height:1.7}
 <div id="items"></div>
 <div class="tot"><span data-t="total"></span><span id="tt"></span></div>
 <div class="cf"><input id="cName" type="text" maxlength="60" autocomplete="name" data-ph="cName"><input id="cCity" type="text" maxlength="40" autocomplete="address-level2" data-ph="cCity"></div>
+<div id="cErr" class="cerr" hidden></div>
 <button class="btn wa" id="send" style="justify-content:center;margin:0" data-t="send"></button>
 <div class="dnav"><button class="dn" id="dcont" data-t="cont"></button><button class="dn" id="dhome" data-t="home"></button></div></aside>
 
@@ -1163,13 +1165,13 @@ let lastA=null;
 const goTo=id=>{open_(false);closeDet();setTimeout(()=>{const e=$(id);if(e)e.scrollIntoView({behavior:"smooth",block:"start"})},320)};
 $("dcont").onclick=()=>{open_(false);closeDet();setTimeout(()=>{const b=document.querySelector(`#gr .add[data-a="${lastA}"]`),a=b&&b.closest(".p"),e=a?(a.querySelector(".pi")||a):$("shop");if(e)e.scrollIntoView({behavior:"smooth",block:"center"})},320)};$("dhome").onclick=()=>goTo("top");$("x").onclick=$("ov").onclick=()=>open_(false);
 try{const _c=JSON.parse(SS.get("cust")||"null");if(_c){$("cName").value=String(_c.n||"").slice(0,60);$("cCity").value=String(_c.c||"").slice(0,40)}}catch(e){}
-$("cName").oninput=$("cCity").oninput=e=>e.target.classList.remove("er");
+$("cName").oninput=$("cCity").oninput=e=>{e.target.classList.remove("er");$("cErr").hidden=true};
 $("send").onclick=()=>{
  let tot=0;const lines=Object.keys(cart).filter(k=>cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k)).map(k=>{const p=ph(k);tot+=p[3]*cart[k];return `• ${nm(p)}${vl(k)?" ["+vl(k)+"]":""}${sp(p)?" ("+sp(p)+")":""} × ${cart[k]} = ${fm(p[3]*cart[k])}`});
  if(!lines.length)return;
  const cN=$("cName"),cC=$("cCity"),cn=cN.value.trim(),cc=cC.value.trim();
  cN.classList.toggle("er",!cn);cC.classList.toggle("er",!cc);
- if(!cn||!cc){(cn?cC:cN).focus();alert(T[L].cNeed);return}
+ if(!cn||!cc){(cn?cC:cN).focus();$("cErr").textContent=T[L].cNeed;$("cErr").hidden=false;return}
  try{SS.set("cust",JSON.stringify({n:cn,c:cc}))}catch(e){}
  const ORDER_PAGE="https://maerchenkonto-ctrl.github.io/sidi-ifni/order.html";
  const oi=Object.keys(cart).filter(k=>cart[k]>0&&ph(k)&&!ph(k).out&&!cOut(k)).map(k=>{const p=ph(k);return {n:nm(p)+(vl(k)?" ["+vl(k)+"]":""),q:cart[k],p:fm(p[3]*cart[k]),i:imgOf(p,String(k).split("|")[2])||""}});
