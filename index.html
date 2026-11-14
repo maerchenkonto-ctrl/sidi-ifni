@@ -1937,5 +1937,27 @@ new MutationObserver(onMut).observe(sb,{childList:true,characterData:true,subtre
 schedule();
 setTimeout(function(){t.classList.add("tw-on");sb.classList.add("tw-on")},12000);
 })();</script>
+<script>
+/* Zurück-Taste (Android): schließt Produktansicht / Warenkorb, statt die Seite zu verlassen */
+(function(){
+ var g=function(i){return document.getElementById(i)};
+ try{if(history.state&&history.state.ov)history.replaceState(null,"")}catch(e){}
+ var sent=false,backing=false,tm=0,bt=0;
+ function anyOpen(){var m=g("md"),d=g("dr");return !!((m&&m.classList.contains("on"))||(d&&d.classList.contains("on")))}
+ function sync(){tm=0;if(backing)return;var o=anyOpen();
+  if(o&&!sent){try{history.pushState({ov:1},"");sent=true}catch(e){}}
+  else if(!o&&sent){sent=false;backing=true;clearTimeout(bt);bt=setTimeout(function(){backing=false;sync()},500);try{history.back()}catch(e){backing=false}}}
+ function sch(){if(!tm)tm=setTimeout(sync,0)}
+ if(window.MutationObserver){var mo=new MutationObserver(sch);
+  ["md","dr"].forEach(function(id){var e=g(id);if(e)mo.observe(e,{attributes:true,attributeFilter:["class"]})})}
+ window.addEventListener("popstate",function(){
+  if(backing){backing=false;clearTimeout(bt);sch();return}
+  if(!sent)return;
+  sent=false;
+  var d=g("dr");
+  if(d&&d.classList.contains("on"))open_(false);else closeDet();
+  sch()});
+})();
+</script>
 </body>
 </html>
