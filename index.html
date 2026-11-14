@@ -704,6 +704,25 @@ footer .cp{padding-bottom:88px;line-height:1.7}
 #dr .cerr{color:#e11d48;font-size:14px;font-weight:700;margin:-2px 0 10px}
 #dr .cf input.er{border-color:#e11d48;outline:2px solid #e11d48}
 </style>
+<style id="sg-css">
+#sg{padding:46px 0 10px}
+.sg-stage{position:relative;direction:ltr;aspect-ratio:16/9;max-height:70vh;width:100%;border-radius:22px;overflow:hidden;background:#0a1424;box-shadow:var(--sh);touch-action:pan-y;user-select:none;-webkit-user-select:none}
+@media(max-width:700px){.sg-stage{aspect-ratio:4/3;border-radius:16px}}
+.sg-s{position:absolute;inset:0;margin:0;opacity:0;visibility:hidden;transition:opacity .9s ease,visibility .9s}
+.sg-s.on{opacity:1;visibility:visible;z-index:1}
+.sg-s img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.sg-s .sg-bg{object-fit:cover;filter:blur(22px) brightness(.7);transform:scale(1.15)}
+.sg-s .sg-fg{object-fit:contain}
+.sg-cap{position:absolute;inset:auto 0 0;z-index:2;padding:46px 22px 18px;color:#fff;font-weight:800;font-size:clamp(15px,2.6vw,22px);text-shadow:0 2px 10px rgba(0,0,0,.6);background:linear-gradient(0deg,rgba(5,15,31,.78),transparent)}
+:root[dir="rtl"] .sg-cap{direction:rtl;text-align:right}:root[dir="ltr"] .sg-cap{direction:ltr;text-align:left}
+.sg-b{position:absolute;top:50%;z-index:3;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(8,42,82,.62);color:#fff;font-size:26px;line-height:1;cursor:pointer;display:grid;place-items:center;backdrop-filter:blur(4px);transition:background .2s}
+.sg-b:hover,.sg-b:focus-visible{background:var(--acc);color:#1b1200}
+.sg-prev{left:12px}.sg-next{right:12px}
+.sg-dots{position:absolute;z-index:3;inset:auto 0 10px;display:flex;justify-content:center;gap:8px;pointer-events:none}
+.sg-dots button{pointer-events:auto;width:10px;height:10px;padding:0;border-radius:99px;border:0;background:rgba(255,255,255,.55);cursor:pointer;transition:width .25s,background .25s}
+.sg-dots button.on{width:26px;background:var(--acc)}
+@media(prefers-reduced-motion:reduce){.sg-s{transition:none}}
+</style>
 </head>
 <body>
 <nav><div class="w">
@@ -849,6 +868,35 @@ footer .cp{padding-bottom:88px;line-height:1.7}
 </header>
 
 
+
+<section id="sg" aria-label="Sidi Ifni">
+  <div class="w">
+    <h2 data-t="sgT">سيدي إفني</h2><p class="sub" data-t="sgS">لمحات من مدينتنا وسواحلها</p>
+    <div class="sg-stage" id="sgStage" role="region" aria-roledescription="carousel" tabindex="0">
+      <figure class="sg-s on"><img class="sg-bg" src="gallery-2.webp" alt="" aria-hidden="true"><img class="sg-fg" src="gallery-2.webp" alt="Sidi Ifni" decoding="async"><figcaption class="sg-cap" data-t="sg1">منارة سيدي إفني</figcaption></figure>
+      <figure class="sg-s"><img class="sg-bg" src="gallery-1.webp" alt="" aria-hidden="true"><img class="sg-fg" src="gallery-1.webp" alt="Legzira" loading="lazy" decoding="async"><figcaption class="sg-cap" data-t="sg2">شاطئ لغزيرة</figcaption></figure>
+      <figure class="sg-s"><img class="sg-bg" src="gallery-3.webp" alt="" aria-hidden="true"><img class="sg-fg" src="gallery-3.webp" alt="Sidi Ifni" loading="lazy" decoding="async"><figcaption class="sg-cap" data-t="sg3">غروب عند بقايا الرصيف القديم</figcaption></figure>
+      <button class="sg-b sg-prev" type="button" aria-label="Previous / السابق">&#8249;</button>
+      <button class="sg-b sg-next" type="button" aria-label="Next / التالي">&#8250;</button>
+      <div class="sg-dots" id="sgDots"></div>
+    </div>
+  </div>
+</section>
+<script>(function(){var st=document.getElementById("sgStage");if(!st)return;var sl=st.querySelectorAll(".sg-s"),dc=document.getElementById("sgDots"),n=sl.length,i=0,tm=null,vis=true,hold=false;
+for(var k=0;k<n;k++){(function(k){var b=document.createElement("button");b.type="button";b.setAttribute("aria-label",(k+1)+"/"+n);b.onclick=function(){go(k);rs()};dc.appendChild(b)})(k)}
+var ds=dc.children;
+function go(x){i=(x+n)%n;for(var k=0;k<n;k++){sl[k].classList.toggle("on",k===i);ds[k].classList.toggle("on",k===i)}}
+function rs(){stop();if(!vis||hold||document.hidden||window.matchMedia("(prefers-reduced-motion:reduce)").matches)return;tm=setInterval(function(){go(i+1)},5000)}
+function stop(){if(tm){clearInterval(tm);tm=null}}
+st.querySelector(".sg-prev").onclick=function(){go(i-1);rs()};
+st.querySelector(".sg-next").onclick=function(){go(i+1);rs()};
+st.addEventListener("keydown",function(e){if(e.key==="ArrowLeft"){go(i-1);rs()}else if(e.key==="ArrowRight"){go(i+1);rs()}});
+var x0=null;st.addEventListener("touchstart",function(e){x0=e.touches[0].clientX;hold=true;stop()},{passive:true});
+st.addEventListener("touchend",function(e){if(x0!==null){var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(dx<0?i+1:i-1)}x0=null;hold=false;rs()});
+st.addEventListener("mouseenter",function(){hold=true;stop()});st.addEventListener("mouseleave",function(){hold=false;rs()});
+document.addEventListener("visibilitychange",rs);
+if("IntersectionObserver" in window){new IntersectionObserver(function(es){vis=es[0].isIntersecting;rs()},{threshold:.25}).observe(st)}
+go(0);rs()})();</script>
 
 <section id="featured-showcase" aria-label="منتجات مختارة">
   <div class="w">
@@ -1041,7 +1089,7 @@ DET[14]={gal:["@c","glassesmodel","glassesdim"],noft:1};
 DET[14].fr={"t": "Lunettes avec protection UV – dimensions", "tl": "Dimensions", "rows": [["Largeur totale (A)", "140 mm"], ["Hauteur du verre (B)", "44 mm"], ["Largeur du verre (C)", "63 mm"], ["Largeur du pont (D)", "16 mm"], ["Longueur des branches (E)", "122 mm"]], "ft": "", "f": [], "n": "Dimensions d’après le schéma du fabricant."};
 
 DET[14].ar={"t": "نظارات مع حماية من الأشعة – المقاسات", "tl": "المقاسات", "rows": [["العرض الكلي (A)", "140 mm"], ["ارتفاع العدسة (B)", "44 mm"], ["عرض العدسة (C)", "63 mm"], ["عرض الجسر (D)", "16 mm"], ["طول الذراع (E)", "122 mm"]], "ft": "", "f": [], "n": "المقاسات حسب رسم الشركة المصنّعة."};
-Object.assign(T.fr,{"scT":"Découvrez les produits de la boutique","scS":"Parcourez notre sélection de matériel de pêche — défilement automatique de droite à gauche","scA":"Voir tous les produits"});Object.assign(T.ar,{"scT":"اكتشف منتجات المتجر","scS":"تصفّح مختاراتنا من معدات الصيد — تتحرك تلقائياً من اليمين إلى اليسار","scA":"عرض كل المنتجات"});
+Object.assign(T.fr,{"sgT":"Sidi Ifni","sgS":"Aperçu de notre ville et de ses côtes","sg1":"Le phare de Sidi Ifni","sg2":"La plage de Legzira","sg3":"Coucher de soleil sur les vestiges de l\u2019ancienne jetée"});Object.assign(T.ar,{"sgT":"سيدي إفني","sgS":"لمحات من مدينتنا وسواحلها","sg1":"منارة سيدي إفني","sg2":"شاطئ لغزيرة","sg3":"غروب عند بقايا الرصيف القديم"});Object.assign(T.fr,{"scT":"Découvrez les produits de la boutique","scS":"Parcourez notre sélection de matériel de pêche — défilement automatique de droite à gauche","scA":"Voir tous les produits"});Object.assign(T.ar,{"scT":"اكتشف منتجات المتجر","scS":"تصفّح مختاراتنا من معدات الصيد — تتحرك تلقائياً من اليمين إلى اليسار","scA":"عرض كل المنتجات"});
 Object.assign(T.fr,{"tr1": "Matériel sélectionné", "td1": "Articles pratiques pour côte, rochers et plage", "tr2": "Commande par WhatsApp", "td2": "Remplissez le panier, envoyez la commande – réponse rapide", "tr3": "De Sidi Ifni", "td3": "Directement de la côte atlantique marocaine"});Object.assign(T.ar,{"tr1": "معدات مختارة", "td1": "منتجات عملية للساحل والصخور والشاطئ", "tr2": "اطلب عبر واتساب", "td2": "املأ السلة وأرسل الطلب – نرد بسرعة", "tr3": "من سيدي إفني", "td3": "مباشرة من الساحل الأطلسي المغربي"});
 IM.glassesmodel="glassesmodel.webp";
 IM.shirtmodel="shirtmodel.webp";IM.shirtmodel_white=IM.shirtmodel;IM.shirtmodel_black="shirtmodel_black.webp";IM.shirtmodel_blue="shirtmodel_blue.webp";IM.combo="combo.webp";
