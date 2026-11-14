@@ -723,6 +723,13 @@ footer .cp{padding-bottom:88px;line-height:1.7}
 .sg-dots button.on{width:26px;background:var(--acc)}
 @media(prefers-reduced-motion:reduce){.sg-s{transition:none}}
 </style>
+<style id="mnav-css">
+.mnav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:42px;height:42px;padding:0;border:0;border-radius:50%;background:rgba(8,42,82,.62);color:#fff;display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(3px);-webkit-tap-highlight-color:transparent;transition:background .2s,transform .15s}
+.mnav svg{width:22px;height:22px;display:block}
+.mprev{left:8px}.mnext{right:8px}
+.mnav:hover,.mnav:focus-visible{background:#f7941d;color:#1b1200}
+.mnav:active{transform:translateY(-50%) scale(.92)}
+</style>
 </head>
 <body>
 <nav><div class="w">
@@ -1171,10 +1178,17 @@ function renderLegal(){const D=LEGAL[L]||LEGAL.ar;
 document.querySelectorAll("[data-lgo]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();const d=$("lg"+a.dataset.lgo);d.open=true;d.scrollIntoView({behavior:"smooth",block:"start"})}));
 const DT={ar:"تفاصيل",fr:"Détails"};
 let gIdx=0,dId=0;
+let gLen=0;
+/* Pfeile in der Produktansicht: physisch links/rechts; im RTL-Layout (ar) ist "weiter" links */
+const gSide=x=>x==="l"?(L==="ar"?1:-1):(L==="ar"?-1:1);
+function gStep(d){if(gLen<2)return;gIdx=(gIdx+d+gLen)%gLen;drawDet()}
+document.addEventListener("keydown",e=>{const m=$("md");if(!m||!m.classList.contains("on"))return;if(e.key==="ArrowLeft"){e.preventDefault();gStep(gSide("l"))}else if(e.key==="ArrowRight"){e.preventDefault();gStep(gSide("r"))}});
+{let tx=null;document.addEventListener("touchstart",e=>{const t=e.target;tx=(t.closest&&t.closest("#md .mg")&&t.tagName!=="VIDEO"&&!t.closest(".mnav"))?e.touches[0].clientX:null},{passive:true});
+document.addEventListener("touchend",e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>45)gStep(gSide(dx<0?"r":"l"))})}
 function openDet(id){dId=id;gIdx=0;drawDet();$("md").classList.add("on");document.body.style.overflow="hidden"}
 function closeDet(){$("md").classList.remove("on");document.body.style.overflow=""}
-function drawDet(){const d=DET[dId],x=d[L],p=P.find(q=>q[0]===dId),g=d.gal.map(k=>k==="@c"?imgOf(p,(sel[dId]||{}).c):k==="@m"?(IM["hm"+(sel[dId]||{}).c]||null):k==="@s"?(IM["shirtmodel_"+(sel[dId]||{}).c]||IM.shirtmodel):(IM[k]||k)).filter(Boolean);{const m=p[5]?imgOf(p,(sel[dId]||{}).c):null;if(m&&g.indexOf(m)<0)g.unshift(m)}if(VID[dId])g.push("@vid");
-$("mdc").innerHTML=`<button class="mx" data-x2="1" aria-label="close">✕</button><div class="mg">${g[gIdx]==="@vid"?`<video src="${VID[dId].src}" poster="${VID[dId].poster}" controls autoplay muted loop playsinline></video>`:`<img src="${g[gIdx]}" alt="">`}</div><div class="mt">${g.map((u,i)=>`<button data-g="${i}" class="${i===gIdx?"on":""}${u==="@vid"?" mv":""}"><img src="${u==="@vid"?VID[dId].poster:u}" alt="">${u==="@vid"?`<span class="ppt">▶</span>`:""}</button>`).join("")}</div><div class="mb"><h2>${x.t}</h2><div class="mp">${prc(p)}</div>${x.rows.length?`<h3>${x.tl}</h3><table>${x.rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("")}</table>`:""}${x.f.length?`<h3>${x.ft}</h3><${d.ol?"ol":"ul"}>${x.f.map(i=>`<li>${i}</li>`).join("")}</${d.ol?"ol":"ul"}>`:""}<p class="mn">${x.n}</p><button class="add" data-a="${p[0]}"${(p.out||selOut(p[0]))?" disabled":""}>${(p.out||selOut(p[0]))?T[L].so:T[L].add}</button>${wishHtml(p)}</div>`}
+function drawDet(){const d=DET[dId],x=d[L],p=P.find(q=>q[0]===dId),g=d.gal.map(k=>k==="@c"?imgOf(p,(sel[dId]||{}).c):k==="@m"?(IM["hm"+(sel[dId]||{}).c]||null):k==="@s"?(IM["shirtmodel_"+(sel[dId]||{}).c]||IM.shirtmodel):(IM[k]||k)).filter(Boolean);{const m=p[5]?imgOf(p,(sel[dId]||{}).c):null;if(m&&g.indexOf(m)<0)g.unshift(m)}if(VID[dId])g.push("@vid");gLen=g.length;
+$("mdc").innerHTML=`<button class="mx" data-x2="1" aria-label="close">✕</button><div class="mg">${g[gIdx]==="@vid"?`<video src="${VID[dId].src}" poster="${VID[dId].poster}" controls autoplay muted loop playsinline></video>`:`<img src="${g[gIdx]}" alt="">`}${gLen>1?`<button class="mnav mprev" type="button" data-gn="l" aria-label="Previous / السابق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button class="mnav mnext" type="button" data-gn="r" aria-label="Next / التالي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>`:""}</div><div class="mt">${g.map((u,i)=>`<button data-g="${i}" class="${i===gIdx?"on":""}${u==="@vid"?" mv":""}"><img src="${u==="@vid"?VID[dId].poster:u}" alt="">${u==="@vid"?`<span class="ppt">▶</span>`:""}</button>`).join("")}</div><div class="mb"><h2>${x.t}</h2><div class="mp">${prc(p)}</div>${x.rows.length?`<h3>${x.tl}</h3><table>${x.rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("")}</table>`:""}${x.f.length?`<h3>${x.ft}</h3><${d.ol?"ol":"ul"}>${x.f.map(i=>`<li>${i}</li>`).join("")}</${d.ol?"ol":"ul"}>`:""}<p class="mn">${x.n}</p><button class="add" data-a="${p[0]}"${(p.out||selOut(p[0]))?" disabled":""}>${(p.out||selOut(p[0]))?T[L].so:T[L].add}</button>${wishHtml(p)}</div>`;{const tb=document.querySelector("#mdc .mt button.on");if(tb&&tb.scrollIntoView)tb.scrollIntoView({inline:"nearest",block:"nearest"})}}
 /* Kategorie-Karten (Bilder aus den vorhandenen Produktfotos – keine zusätzlichen Dateien) */
 const KCATS=["all","combo","rods","reels","lures","tackle","wear","bags"];
 const KIMG={combo:"combo",rods:"rod",reels:"reel",lures:"bait",tackle:"line",wear:"h01",bags:"bag40"};
@@ -1218,6 +1232,7 @@ function drawer(){
 document.addEventListener("click",e=>{
  const dz=e.target.closest("[data-d]");if(dz){openDet(+dz.dataset.d);return}
  if(e.target.closest("[data-x2]")||e.target.id==="md"){closeDet();return}
+ const gn=e.target.closest("[data-gn]");if(gn){gStep(gSide(gn.dataset.gn));return}
  const gb=e.target.closest("[data-g]");if(gb){gIdx=+gb.dataset.g;drawDet();return}
  if(e.target.closest("#md")&&e.target.closest("[data-a]"))closeDet();
  const t=e.target.closest("button")||e.target;
